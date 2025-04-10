@@ -1,0 +1,7 @@
+grupo7\dentalogic\dao\UsuarioDAO.class
+grupo7\dentalogic\model\Usuario.class
+grupo7\dentalogic\servlets\HomeServlet.class
+grupo7\dentalogic\servlets\LoginServlet.class
+grupo7\dentalogic\config\TestConexion.class
+grupo7\dentalogic\servlets\LogoutServlet.class
+grupo7\dentalogic\config\ConexionBD.class

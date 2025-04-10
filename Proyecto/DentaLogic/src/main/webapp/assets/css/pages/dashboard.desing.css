@@ -1,0 +1,162 @@
+:root {
+    --sidebar-width: 85px;
+    --sidebar-bg: #19414b;
+    --card-bg: #1a4d40;
+    --navbar-height: 60px;
+}
+
+.static-sidebar {
+    width: var(--sidebar-width);
+    background-color: var(--sidebar-bg);
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+.sidebar-modal {
+    position: fixed;
+    top: 0;
+    left: -250px;
+    width: 250px;
+    background-color: var(--sidebar-bg);
+    height: 100vh;
+    z-index: 1100;
+    transition: all 0.3s ease;
+}
+
+.sidebar-modal.show {
+    left: 0;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 1050;
+    display: none;
+}
+
+.overlay.show {
+    display: block;
+}
+
+.main-content {
+    margin-left: var(--sidebar-width);
+    width: calc(100% - var(--sidebar-width));
+}
+
+.navbar {
+    height: var(--navbar-height);
+    background-color: white;
+    position: fixed;
+    top: 0;
+    left: var(--sidebar-width);
+    right: 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    z-index: 999;
+}
+
+.content-wrapper {
+    margin-top: var(--navbar-height);
+    padding: 2rem;
+}
+
+.user-section {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    padding-right: 1rem;
+    cursor: pointer;
+}
+
+.user-info {
+    text-align: right;
+    margin-right: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.saludo {
+    font-weight: 500;
+    margin-bottom: 0;
+    line-height: 1.2;
+    color: #6c757d;
+    display: flex;
+    align-items: center;
+}
+
+.user-name {
+    font-weight: 500;
+    margin-bottom: 0;
+    line-height: 1.2;
+    color: #212529;
+    display: flex;
+    align-items: center;
+}
+
+.user-role {
+    font-size: 0.8rem;
+    color: #6c757d;
+    margin-bottom: 0;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.dropdown-toggle::after {
+    display: inline-block;
+    margin-left: 0.5rem;
+    vertical-align: middle;
+    content: "";
+    border-top: 0.35em solid;
+    border-right: 0.35em solid transparent;
+    border-bottom: 0;
+    border-left: 0.35em solid transparent;
+    transition: transform 0.2s ease;
+}
+
+.dropdown-toggle.show::after {
+    transform: rotate(-180deg);
+}
+
+.dropdown-menu {
+    margin-top: 10px !important;
+}
+
+/* Estilos adicionales para módulos */
+.module-card {
+    transition: all 0.3s ease;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.module-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+}
+
+.badge-status {
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-weight: 500;
+}
+
+.action-btn {
+    width: 30px;
+    height: 30px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 3px;
+}
