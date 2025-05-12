@@ -8,38 +8,39 @@ import java.sql.*;
 
 public class UsuarioDAO {
 
-    public static Usuario validarUsuario(String email, String password) {
-        Usuario usuario = null;
-        String query = "SELECT u.id_usuario, u.email, u.password, u.id_empleado, u.id_rol, u.activo, "
-                + "e.nombre, e.apellido, r.nombre AS rol "
+    public static Usuario validarUsuario(String usuario, String password) {
+        Usuario usuarioValidado = null;
+        String query = "SELECT u.usr_id, u.usr_user, u.usr_pass, u.emp_id, u.rol_id, u.usr_act, "
+                + "e.emp_nom, e.emp_ape, r.rol_nom AS rol "
                 + "FROM usuarios u "
-                + "JOIN empleados e ON u.id_empleado = e.id_empleado "
-                + "JOIN roles r ON u.id_rol = r.id_rol "
-                + "WHERE u.email = ? AND u.activo = 1";
+                + "JOIN empleados e ON u.emp_id = e.emp_id "
+                + "JOIN roles r ON u.rol_id = r.rol_id "
+                + "WHERE u.usr_user = ? AND u.usr_act = 1";
 
         try (Connection con = ConexionBD.conectar(); PreparedStatement stmt = con.prepareStatement(query)) {
-            stmt.setString(1, email);
+            stmt.setString(1, usuario); // Cambié 'email' por 'usuario'
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                String storedPassword = rs.getString("password");
+                String storedPassword = rs.getString("usr_pass");
                 if (BCrypt.checkpw(password, storedPassword)) {
-                    usuario = new Usuario(
-                            rs.getInt("id_usuario"),
-                            rs.getInt("id_empleado"),
-                            rs.getString("email"),
+                    usuarioValidado = new Usuario(
+                            rs.getInt("usr_id"),
+                            rs.getInt("emp_id"),
+                            rs.getString("usr_user"), // Cambié 'email' por 'usuario'
                             storedPassword,
-                            rs.getInt("id_rol"),
-                            rs.getBoolean("activo"),
-                            rs.getString("nombre"),
-                            rs.getString("apellido"),
+                            rs.getInt("rol_id"),
+                            rs.getBoolean("usr_act"),
+                            rs.getString("emp_nom"),
+                            rs.getString("emp_ape"),
                             rs.getString("rol")
                     );
                 }
             }
         } catch (SQLException e) {
+            e.printStackTrace();
         }
 
-        return usuario;
+        return usuarioValidado;
     }
 }

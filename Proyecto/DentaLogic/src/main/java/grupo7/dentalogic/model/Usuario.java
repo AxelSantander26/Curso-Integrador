@@ -1,11 +1,10 @@
-
 package grupo7.dentalogic.model;
 
 public class Usuario {
 
     private int idUsuario;
     private int idEmpleado;
-    private String email;
+    private String usuario;
     private String password;
     private int idRol;
     private boolean activo;
@@ -16,10 +15,10 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Usuario(int idUsuario, int idEmpleado, String email, String password, int idRol, boolean activo, String nombre, String apellido, String rol) {
+    public Usuario(int idUsuario, int idEmpleado, String usuario, String password, int idRol, boolean activo, String nombre, String apellido, String rol) {
         this.idUsuario = idUsuario;
         this.idEmpleado = idEmpleado;
-        this.email = email;
+        this.usuario = usuario;
         this.password = password;
         this.idRol = idRol;
         this.activo = activo;
@@ -27,6 +26,8 @@ public class Usuario {
         this.apellido = apellido;
         this.rol = rol;
     }
+
+    // Getters y setters
 
     public int getIdUsuario() {
         return idUsuario;
@@ -44,12 +45,12 @@ public class Usuario {
         this.idEmpleado = idEmpleado;
     }
 
-    public String getEmail() {
-        return email;
+    public String getUsuario() {  // Cambié 'getEmail' a 'getUsuario'
+        return usuario;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUsuario(String usuario) {  // Cambié 'setEmail' a 'setUsuario'
+        this.usuario = usuario;
     }
 
     public String getPassword() {

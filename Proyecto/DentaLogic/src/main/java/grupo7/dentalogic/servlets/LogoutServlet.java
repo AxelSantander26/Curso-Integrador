@@ -1,4 +1,3 @@
-
 package grupo7.dentalogic.servlets;
 
 import javax.servlet.ServletException;
@@ -12,8 +11,7 @@ public class LogoutServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
-        session.invalidate();
-        response.sendRedirect("login.jsp");
+        session.invalidate();  // Invalidar la sesión
+        response.sendRedirect("login.jsp");  // Redirigir al login
     }
 }
-

@@ -6,7 +6,7 @@
 
     <groupId>grupo7</groupId>
     <artifactId>DentaLogic</artifactId>
-    <version>1.2s-SNAPSHOT</version>
+    <version>2-PreAlfa-SNAPSHOT</version>
     <packaging>war</packaging>
     
     <properties>
@@ -30,7 +30,7 @@
             <version>8.0.33</version>
         </dependency>
 
-        <!-- BCrypt for password hashing -->
+        <!-- BCrypt para el encriptado -->
         <dependency>
             <groupId>org.mindrot</groupId>
             <artifactId>jbcrypt</artifactId>
@@ -47,7 +47,7 @@
 
     <build>
         <plugins>
-            <!-- Actualizando maven-war-plugin -->
+            <!-- maven-war-plugin actualisado -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
