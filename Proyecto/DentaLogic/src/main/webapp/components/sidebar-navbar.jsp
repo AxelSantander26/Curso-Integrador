@@ -108,7 +108,7 @@
             <i class="bi bi-speedometer2 fs-4"></i>
             <small>Inicio</small>
         </a>
-        <a href="<c:url value='/personal.jsp' />" class="d-flex flex-column align-items-center text-white text-decoration-none mb-3">
+        <a href="<c:url value='/empleados' />" class="d-flex flex-column align-items-center text-white text-decoration-none mb-3">
             <i class="bi bi-person-vcard fs-4"></i>
             <small>Personal</small>
         </a>
@@ -116,24 +116,24 @@
             <i class="bi bi-file-earmark-spreadsheet fs-4"></i>
             <small>Planillas</small>
         </a>
-      <a href="<c:url value='/asistencias.jsp' />" class="d-flex flex-column align-items-center text-white text-decoration-none mb-3">
-    <i class="bi bi-clipboard2-pulse fs-4"></i>
-    <small>Asistencias</small>
-</a>
+        <a href="<c:url value='/asistencias.jsp' />" class="d-flex flex-column align-items-center text-white text-decoration-none mb-3">
+            <i class="bi bi-clipboard2-pulse fs-4"></i>
+            <small>Asistencias</small>
+        </a>
 
         <a href="<c:url value='/bonos.jsp' />" class="d-flex flex-column align-items-center text-white text-decoration-none mb-3">
             <i class="bi bi-cash-coin fs-4"></i>
             <small>Bonos</small>
         </a>
         <a href="<c:url value='/periodos.jsp' />" class="d-flex flex-column align-items-center text-white text-decoration-none mb-3">
-    <i class="bi bi-calendar-check fs-4"></i>
-    <small style="text-align: center;">Periodos Pago</small>
-</a>
-       <a href="<c:url value='/pagos.jsp' />" class="d-flex flex-column align-items-center text-white text-decoration-none mb-3">
-   <i class="bi bi-credit-card fs-4"></i>
+            <i class="bi bi-calendar-check fs-4"></i>
+            <small style="text-align: center;">Periodos Pago</small>
+        </a>
+        <a href="<c:url value='/pagos.jsp' />" class="d-flex flex-column align-items-center text-white text-decoration-none mb-3">
+            <i class="bi bi-credit-card fs-4"></i>
 
-    <small style="text-align: center;"> Pagos a Empleados</small>
-</a>
+            <small style="text-align: center;"> Pagos a Empleados</small>
+        </a>
 
     </div>
 </div>
@@ -188,7 +188,7 @@
                     </div>
                     <p class="user-role" style="font-size: 0.85rem; color: gray; margin-top: 2px;">${usuario.rol}</p>
                 </div>
-                
+
                 <!-- Avatar de Usuario -->
                 <img src="assets/images/usuario.png" alt="Logo" class="mb-4" style="width: 46px; margin-top: 5;">
                 <i class="bi bi-chevron-down ms-1" style="font-size: 0.8rem;"></i>
