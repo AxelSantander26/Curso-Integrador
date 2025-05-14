@@ -1,3 +1,7 @@
+<%@ page import="grupo7.dentalogic.model.DashboardInfo" %>
+<%
+    DashboardInfo dashboardInfo = (DashboardInfo) request.getAttribute("dashboardInfo");
+%>
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -25,7 +29,7 @@
                         <div class="col-md-3">
                             <div class="card p-3">
                                 <h5><i class="bi bi-person-vcard me-2"></i> Empleados</h5>
-                                <p class="fs-4">120</p> <!-- Número de empleados -->
+                                <p class="fs-4"><%= dashboardInfo.getTotalEmpleados() %></p>
                             </div>
                         </div>
 
@@ -33,7 +37,7 @@
                         <div class="col-md-3">
                             <div class="card p-3">
                                 <h5><i class="bi bi-cash-coin me-2"></i> Bonos</h5>
-                                <p class="fs-4">15</p> <!-- Número de bonos activos -->
+                                <p class="fs-4"><%= dashboardInfo.getTotalBonos() %></p>
                             </div>
                         </div>
 
@@ -41,7 +45,7 @@
                         <div class="col-md-3">
                             <div class="card p-3">
                                 <h5><i class="bi bi-calendar-check me-2"></i> Asistencias Hoy</h5>
-                                <p class="fs-4">85</p> <!-- Número de asistencias hoy -->
+                                <p class="fs-4"><%= dashboardInfo.getAsistenciasHoy() %></p>
                             </div>
                         </div>
 
@@ -49,7 +53,7 @@
                         <div class="col-md-3">
                             <div class="card p-3">
                                 <h5><i class="bi bi-cash-coin me-2"></i> Total a Pagar</h5>
-                                <p class="fs-4">S/ 45,000.00</p> <!-- Total a pagar calculado -->
+                                <p class="fs-4">S/ <%= String.format("%.2f", dashboardInfo.getTotalPagar()) %></p>
                             </div>
                         </div>
                     </div>
@@ -86,7 +90,7 @@
                     labels: ['Semana 1', 'Semana 2', 'Semana 3', 'Semana 4'],
                     datasets: [{
                         label: 'Asistencias',
-                        data: [40, 55, 50, 60],  // Números ficticios para asistencias por semana
+                        data: [40, 55, 50, 60],
                         fill: true
                     }]
                 }
@@ -100,7 +104,7 @@
                     labels: ['Enero', 'Febrero', 'Marzo', 'Abril'],
                     datasets: [{
                         label: 'Total a Pagar',
-                        data: [12000, 15000, 13000, 18000],  // Números ficticios para total a pagar por mes
+                        data: [12000, 15000, 13000, 18000],
                         borderWidth: 1
                     }]
                 }

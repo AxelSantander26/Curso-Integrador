@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 12-05-2025 a las 11:50:35
+-- Tiempo de generación: 14-05-2025 a las 03:12:33
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -45,6 +45,13 @@ CREATE TABLE `bonos` (
   `bono_can` decimal(10,2) NOT NULL,
   `bono_desc` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `bonos`
+--
+
+INSERT INTO `bonos` (`bono_id`, `bono_nom`, `bono_can`, `bono_desc`) VALUES
+(1, 'prueba', 54.00, 'bono de prueba');
 
 -- --------------------------------------------------------
 
@@ -104,14 +111,14 @@ CREATE TABLE `empleados` (
 --
 
 INSERT INTO `empleados` (`emp_id`, `emp_dni`, `emp_nom`, `emp_ape`, `emp_email`, `emp_tel`, `esp_id`, `emp_fec`, `emp_sal`) VALUES
-(33, '76432189', 'Axel Jesús', 'Santander Alcarraz', 'axelsantander@gmail.com', '912345678', NULL, '2025-01-15', 5000.00),
+(33, '76432189', 'Axel Jesus', 'Santander Alcarraz', 'axelsantander@gmail.com', '912345678', 1, '2025-01-15', 5000.00),
 (34, '75643829', 'Lucía Marisol', 'Cruz Villanueva', 'luciacruz@gmail.com', '913456789', NULL, '2025-01-22', 2800.00),
 (35, '73214567', 'Carlos Javier', 'Quispe Salazar', 'carlosquispe@gmail.com', '914567890', 1, '2025-01-25', 3500.00),
 (36, '74321890', 'Andrea Paola', 'Gómez Huamán', 'andreagomez@gmail.com', '915678901', 2, '2025-01-28', 3500.00),
 (37, '75478901', 'Luis Enrique', 'Paredes Soto', 'luisparedes@gmail.com', '916789012', 3, '2025-02-01', 3500.00),
 (38, '76589012', 'Sandra Milagros', 'Ramírez León', 'sandraramirez@gmail.com', '917890123', 4, '2025-02-05', 3500.00),
 (39, '77690123', 'Jorge Alberto', 'Rojas Aguilar', 'jorgerojas@gmail.com', '918901234', 5, '2025-02-08', 3500.00),
-(40, '78701234', 'Mónica Fiorella', 'Cáceres Meza', 'monicacaceres@gmail.com', '919012345', 6, '2025-02-11', 3500.00),
+(40, '78701234', 'Mónica Fiorella', 'Cáceres Meza', 'monicacaceres@gmail.com', '919012345', 4, '2025-02-11', 3500.00),
 (41, '79812345', 'Ricardo Daniel', 'Salinas Ruiz', 'ricardosalinas@gmail.com', '920123456', 1, '2025-02-15', 3500.00),
 (42, '70923456', 'Valeria Roxana', 'Espinoza Poma', 'valeriaespinoza@gmail.com', '921234567', 2, '2025-02-20', 3500.00),
 (43, '71034567', 'Fernando Iván', 'Reyes Guevara', 'fernandoreyes@gmail.com', '922345678', 3, '2025-02-25', 3500.00),
@@ -185,8 +192,16 @@ CREATE TABLE `periodos_pago` (
   `per_id` int(11) NOT NULL,
   `per_ini` date NOT NULL,
   `per_fin` date NOT NULL,
-  `per_desc` varchar(255) DEFAULT NULL
+  `per_desc` varchar(255) DEFAULT NULL,
+  `per_nom` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `periodos_pago`
+--
+
+INSERT INTO `periodos_pago` (`per_id`, `per_ini`, `per_fin`, `per_desc`, `per_nom`) VALUES
+(1, '2025-05-01', '2025-05-30', 'prueba 2', 'PERIODO DE MAYO');
 
 -- --------------------------------------------------------
 
@@ -346,7 +361,7 @@ ALTER TABLE `asistencias`
 -- AUTO_INCREMENT de la tabla `bonos`
 --
 ALTER TABLE `bonos`
-  MODIFY `bono_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `bono_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `detalle_asistencias`
@@ -364,7 +379,7 @@ ALTER TABLE `detalle_pagos`
 -- AUTO_INCREMENT de la tabla `empleados`
 --
 ALTER TABLE `empleados`
-  MODIFY `emp_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
+  MODIFY `emp_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
 
 --
 -- AUTO_INCREMENT de la tabla `especialidades`
@@ -382,7 +397,7 @@ ALTER TABLE `pagos`
 -- AUTO_INCREMENT de la tabla `periodos_pago`
 --
 ALTER TABLE `periodos_pago`
-  MODIFY `per_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `per_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `roles`

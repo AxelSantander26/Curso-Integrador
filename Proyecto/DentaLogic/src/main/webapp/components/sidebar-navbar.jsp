@@ -98,13 +98,13 @@
     }
 </style>
 
-<!-- Sidebar -->
+<!-- Sidebar Estático -->
 <div class="static-sidebar text-white">
     <div class="d-flex flex-column align-items-center pt-2">
         <button class="btn btn-link text-white mb-4" id="hamburgerBtn">
             <i class="bi bi-list fs-4"></i>
         </button>
-        <a href="<c:url value='/dashboard.jsp' />"class="d-flex flex-column align-items-center text-white text-decoration-none mb-3">
+        <a href="<c:url value='/dashboard' />" class="d-flex flex-column align-items-center text-white text-decoration-none mb-3">
             <i class="bi bi-speedometer2 fs-4"></i>
             <small>Inicio</small>
         </a>
@@ -112,59 +112,60 @@
             <i class="bi bi-person-vcard fs-4"></i>
             <small>Personal</small>
         </a>
-        <a href="<c:url value='/planillas.jsp' />" class="d-flex flex-column align-items-center text-white text-decoration-none mb-3">
-            <i class="bi bi-file-earmark-spreadsheet fs-4"></i>
-            <small>Planillas</small>
-        </a>
         <a href="<c:url value='/asistencias.jsp' />" class="d-flex flex-column align-items-center text-white text-decoration-none mb-3">
             <i class="bi bi-clipboard2-pulse fs-4"></i>
             <small>Asistencias</small>
         </a>
-
-        <a href="<c:url value='/bonos.jsp' />" class="d-flex flex-column align-items-center text-white text-decoration-none mb-3">
+        <a href="<c:url value='/bonos' />" class="d-flex flex-column align-items-center text-white text-decoration-none mb-3">
             <i class="bi bi-cash-coin fs-4"></i>
             <small>Bonos</small>
         </a>
-        <a href="<c:url value='/periodos.jsp' />" class="d-flex flex-column align-items-center text-white text-decoration-none mb-3">
-            <i class="bi bi-calendar-check fs-4"></i>
-            <small style="text-align: center;">Periodos Pago</small>
-        </a>
         <a href="<c:url value='/pagos.jsp' />" class="d-flex flex-column align-items-center text-white text-decoration-none mb-3">
             <i class="bi bi-credit-card fs-4"></i>
-
-            <small style="text-align: center;"> Pagos a Empleados</small>
+            <small>Pagos</small>
         </a>
-
+        <a href="<c:url value='/periodos' />" class="d-flex flex-column align-items-center text-white text-decoration-none mb-3">
+            <i class="bi bi-calendar-check fs-4"></i>
+            <small>Periodos</small>
+        </a>
+        <a href="<c:url value='/planillas.jsp' />" class="d-flex flex-column align-items-center text-white text-decoration-none mb-3">
+            <i class="bi bi-file-earmark-spreadsheet fs-4"></i>
+            <small>Planillas</small>
+        </a>
     </div>
 </div>
 
-<!-- Modal para sidebar expandido -->
+<!-- Modal Sidebar Expandido -->
 <div class="sidebar-modal text-white" id="sidebarModal">
     <div class="p-3">
         <button class="btn btn-link text-white p-0 mb-4 d-flex align-items-center" id="closeSidebarBtn">
             <i class="bi bi-arrow-left fs-4 me-3"></i>
             <span class="fw-bold">REGRESAR</span>
         </button>
-        <a href="#" class="d-flex align-items-center text-white text-decoration-none py-2 px-3 mb-2">
-            <i class="bi bi-speedometer2 fs-4 me-3"></i> Inicio
+        <a href="<c:url value='/dashboard' />" class="d-flex align-items-center text-white text-decoration-none py-2 px-3 mb-2">
+            <i class="bi bi-speedometer2 fs-4 me-3"></i> Inicio (vista general)
         </a>
-        <a href="#" class="d-flex align-items-center text-white text-decoration-none py-2 px-3 mb-2">
-            <i class="bi bi-person-vcard fs-4 me-3"></i> Personal
+        <a href="<c:url value='/empleados' />" class="d-flex align-items-center text-white text-decoration-none py-2 px-3 mb-2">
+            <i class="bi bi-person-vcard fs-4 me-3"></i> Personal (gestión de empleados)
         </a>
-        <a href="#" class="d-flex align-items-center text-white text-decoration-none py-2 px-3 mb-2">
-            <i class="bi bi-file-earmark-spreadsheet fs-4 me-3"></i> Planillas
+        <a href="<c:url value='/asistencias.jsp' />" class="d-flex align-items-center text-white text-decoration-none py-2 px-3 mb-2">
+            <i class="bi bi-clipboard2-pulse fs-4 me-3"></i> Asistencias (registro diario)
         </a>
-        <a href="/asistencias.jsp" class="d-flex align-items-center text-white text-decoration-none py-2 px-3 mb-2">
-            <i class="bi bi-clipboard2-pulse fs-4 me-3"></i> Asistencias
+        <a href="<c:url value='/bonos' />" class="d-flex align-items-center text-white text-decoration-none py-2 px-3 mb-2">
+            <i class="bi bi-cash-coin fs-4 me-3"></i> Bonos (asignación adicional)
         </a>
-        <a href="#" class="d-flex align-items-center text-white text-decoration-none py-2 px-3 mb-2">
-            <i class="bi bi-cash-coin fs-4 me-3"></i> Bonos
+        <a href="<c:url value='/pagos.jsp' />" class="d-flex align-items-center text-white text-decoration-none py-2 px-3 mb-2">
+            <i class="bi bi-credit-card fs-4 me-3"></i> Pagos a Empleados (cálculo en tiempo real)
         </a>
-        <a  class="d-flex align-items-center text-white text-decoration-none py-2 px-3 mb-2">
-            <i class="bi bi-calendar-check fs-4 me-3"></i> Periodos de Pago
+        <a href="<c:url value='/periodos' />" class="d-flex align-items-center text-white text-decoration-none py-2 px-3 mb-2">
+            <i class="bi bi-calendar-check fs-4 me-3"></i> Periodos de Pago (gestión mensual)
+        </a>
+        <a href="<c:url value='/planillas.jsp' />" class="d-flex align-items-center text-white text-decoration-none py-2 px-3 mb-2">
+            <i class="bi bi-file-earmark-spreadsheet fs-4 me-3"></i> Planillas (resumen final del mes)
         </a>
     </div>
 </div>
+
 
 
 <!-- Overlay -->

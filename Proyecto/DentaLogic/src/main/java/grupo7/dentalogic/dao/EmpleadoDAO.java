@@ -12,7 +12,7 @@ public class EmpleadoDAO {
     private Connection conexion;
 
     public EmpleadoDAO() {
-        this.conexion = ConexionBD.conectar(); // Usar conexión directa
+        this.conexion = ConexionBD.conectar(); // Usar conexi?n directa
     }
 
 // ? LISTAR todos los empleados
@@ -102,7 +102,7 @@ public class EmpleadoDAO {
         }
     }
 
-// ? OBTENER empleado por ID (útil para editar)
+// ? OBTENER empleado por ID (?til para editar)
     public Empleado obtenerPorId(int empId) {
         String sql = "SELECT e.*, es.esp_nom FROM empleados e LEFT JOIN especialidades es ON e.esp_id = es.esp_id WHERE emp_id = ?";
         Empleado emp = null;
