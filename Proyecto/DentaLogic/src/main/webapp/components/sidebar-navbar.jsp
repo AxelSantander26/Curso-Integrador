@@ -112,7 +112,7 @@
             <i class="bi bi-person-vcard fs-4"></i>
             <small>Personal</small>
         </a>
-        <a href="<c:url value='/asistencias.jsp' />" class="d-flex flex-column align-items-center text-white text-decoration-none mb-3">
+        <a href="<c:url value='/asistencias' />" class="d-flex flex-column align-items-center text-white text-decoration-none mb-3">
             <i class="bi bi-clipboard2-pulse fs-4"></i>
             <small>Asistencias</small>
         </a>
@@ -120,7 +120,7 @@
             <i class="bi bi-cash-coin fs-4"></i>
             <small>Bonos</small>
         </a>
-        <a href="<c:url value='/pagos.jsp' />" class="d-flex flex-column align-items-center text-white text-decoration-none mb-3">
+        <a href="<c:url value='/pagos' />" class="d-flex flex-column align-items-center text-white text-decoration-none mb-3">
             <i class="bi bi-credit-card fs-4"></i>
             <small>Pagos</small>
         </a>
@@ -128,7 +128,7 @@
             <i class="bi bi-calendar-check fs-4"></i>
             <small>Periodos</small>
         </a>
-        <a href="<c:url value='/planillas.jsp' />" class="d-flex flex-column align-items-center text-white text-decoration-none mb-3">
+        <a href="<c:url value='/planillas' />" class="d-flex flex-column align-items-center text-white text-decoration-none mb-3">
             <i class="bi bi-file-earmark-spreadsheet fs-4"></i>
             <small>Planillas</small>
         </a>
@@ -148,19 +148,19 @@
         <a href="<c:url value='/empleados' />" class="d-flex align-items-center text-white text-decoration-none py-2 px-3 mb-2">
             <i class="bi bi-person-vcard fs-4 me-3"></i> Personal (gestión de empleados)
         </a>
-        <a href="<c:url value='/asistencias.jsp' />" class="d-flex align-items-center text-white text-decoration-none py-2 px-3 mb-2">
+        <a href="<c:url value='/asistencias' />" class="d-flex align-items-center text-white text-decoration-none py-2 px-3 mb-2">
             <i class="bi bi-clipboard2-pulse fs-4 me-3"></i> Asistencias (registro diario)
         </a>
         <a href="<c:url value='/bonos' />" class="d-flex align-items-center text-white text-decoration-none py-2 px-3 mb-2">
             <i class="bi bi-cash-coin fs-4 me-3"></i> Bonos (asignación adicional)
         </a>
-        <a href="<c:url value='/pagos.jsp' />" class="d-flex align-items-center text-white text-decoration-none py-2 px-3 mb-2">
+        <a href="<c:url value='/pagos' />" class="d-flex align-items-center text-white text-decoration-none py-2 px-3 mb-2">
             <i class="bi bi-credit-card fs-4 me-3"></i> Pagos a Empleados (cálculo en tiempo real)
         </a>
         <a href="<c:url value='/periodos' />" class="d-flex align-items-center text-white text-decoration-none py-2 px-3 mb-2">
             <i class="bi bi-calendar-check fs-4 me-3"></i> Periodos de Pago (gestión mensual)
         </a>
-        <a href="<c:url value='/planillas.jsp' />" class="d-flex align-items-center text-white text-decoration-none py-2 px-3 mb-2">
+        <a href="<c:url value='/planillas' />" class="d-flex align-items-center text-white text-decoration-none py-2 px-3 mb-2">
             <i class="bi bi-file-earmark-spreadsheet fs-4 me-3"></i> Planillas (resumen final del mes)
         </a>
     </div>
