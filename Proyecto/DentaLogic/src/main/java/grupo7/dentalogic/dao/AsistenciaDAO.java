@@ -1,79 +1,78 @@
 package grupo7.dentalogic.dao;
 
-import grupo7.dentalogic.model.Asistencia;
+import grupo7.dentalogic.config.ConexionBD;
+import grupo7.dentalogic.model.AsistenciaInfo;
 
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-
-
-
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.*;
 
 public class AsistenciaDAO {
-    private Connection conn;
+    private Connection conexion;
 
-    public AsistenciaDAO(Connection conn) {
-        this.conn = conn;
+    public AsistenciaDAO() {
+        this.conexion = ConexionBD.conectar();
     }
 
-    // Insertar nueva asistencia con tipo_asistencia automático
-    public boolean insertarAsistencia(Asistencia asistencia) {
-        String tipoAsistencia = calcularTipoAsistencia(asistencia.getHoraLlegada());
-        String sql = "INSERT INTO asistencias (emp_id, hora_llegada, tipo_asistencia) VALUES (?, ?, ?)";
+    // Obtener todos los empleados
+public List<AsistenciaInfo> obtenerTodosLosEmpleados() {
+    List<AsistenciaInfo> lista = new ArrayList<>();
 
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, asistencia.getEmpId());
-            stmt.setTime(2, asistencia.getHoraLlegada());
-            stmt.setString(3, tipoAsistencia);
-            return stmt.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+    String sql = "SELECT emp_id, emp_nom, emp_ape FROM empleados";
+
+    try (PreparedStatement ps = conexion.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+
+        while (rs.next()) {
+            AsistenciaInfo emp = new AsistenciaInfo();
+            emp.setEmpId(rs.getInt("emp_id"));
+            emp.setNombre(rs.getString("emp_nom"));
+            emp.setApellido(rs.getString("emp_ape"));
+            lista.add(emp);
         }
+
+    } catch (Exception e) {
+        e.printStackTrace();
     }
 
-    // Lógica para determinar tipo de asistencia automáticamente
-    private String calcularTipoAsistencia(Time horaLlegada) {
-        Time horaPresente = Time.valueOf("09:00:00");
-        Time horaLimiteTardanza = Time.valueOf("17:00:00");
+    return lista;
+}
 
-        if (horaLlegada.compareTo(horaPresente) <= 0) {
-            return "Asistio";
-        } else if (horaLlegada.compareTo(horaLimiteTardanza) <= 0) {
-            return "Tardanza";
-        } else {
-            return "Falta";
+// Obtener asistencias con justificaci�n
+public List<AsistenciaInfo> obtenerAsistenciasConJustificacion() {
+    List<AsistenciaInfo> lista = new ArrayList<>();
+
+    String sql = "SELECT a.emp_id, e.emp_nom, e.emp_ape, " +
+            "a.fecha, a.hora_entrada, a.hora_salida, a.estado, " +
+            "j.jus_id IS NOT NULL AS justificado, j.motivo AS observaciones " +
+            "FROM asistencias a " +
+            "INNER JOIN empleados e ON a.emp_id = e.emp_id " +
+            "LEFT JOIN justificativos j ON a.asi_id = j.asi_id " +
+            "ORDER BY a.fecha DESC";
+
+    try (PreparedStatement ps = conexion.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+
+        while (rs.next()) {
+            AsistenciaInfo info = new AsistenciaInfo();
+            info.setEmpId(rs.getInt("emp_id"));
+            info.setNombre(rs.getString("emp_nom"));
+            info.setApellido(rs.getString("emp_ape"));
+            info.setFecha(rs.getDate("fecha"));
+            info.setHoraEntrada(rs.getTime("hora_entrada"));
+            info.setHoraSalida(rs.getTime("hora_salida"));
+            info.setEstado(rs.getString("estado"));
+            info.setJustificado(rs.getBoolean("justificado"));
+            info.setObservaciones(rs.getString("observaciones"));
+
+            lista.add(info);
         }
+
+    } catch (Exception e) {
     }
 
-    // Obtener todas las asistencias con JOIN empleados
-    public List<Asistencia> listarAsistencias() {
-        List<Asistencia> lista = new ArrayList<>();
-        String sql = "SELECT " +
-                     "  a.asis_id, e.emp_id, e.emp_dni, e.emp_nom, e.emp_ape, " +
-                     "  CONCAT(e.emp_nom, ' ', e.emp_ape) AS nombre_completo, " +
-                     "  a.hora_llegada, a.tipo_asistencia, a.fecha_registro_asis " +
-                     "FROM asistencias a " +
-                     "INNER JOIN empleados e ON a.emp_id = e.emp_id";
+    return lista;
+}
 
-        try (PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
-            while (rs.next()) {
-                Asistencia a = new Asistencia();
-                a.setAsisId(rs.getInt("asis_id"));
-                a.setEmpId(rs.getInt("emp_id"));
-                a.setEmpDni(rs.getString("emp_dni"));
-                a.setEmpNom(rs.getString("emp_nom"));
-                a.setEmpApe(rs.getString("emp_ape"));
-                a.setNombreCompleto(rs.getString("nombre_completo"));
-                a.setHoraLlegada(rs.getTime("hora_llegada"));
-                a.setTipoAsistencia(rs.getString("tipo_asistencia"));
-                a.setFechaRegistroAsis(rs.getTimestamp("fecha_registro_asis"));
-                lista.add(a);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return lista;
-    }
 }

@@ -1,6 +1,4 @@
 <%@page contentType="text/html" pageEncoding="windows-1252"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -63,13 +61,10 @@
 
                         <div class="col-md-4">
                             <label class="form-label">Empleado</label>
-                         <select class="form-select" name="emp_id" required>
-    <option selected disabled>Seleccione...</option>
-    <c:forEach var="emp" items="${empleadosEspecializados}">
-        <option value="${emp.empId}">${emp.empNom} ${emp.empApe} (${emp.especialidad})</option>
-    </c:forEach>
-</select>
-
+                            <select class="form-select" name="emp_id" required>
+                                <option selected disabled>Seleccione...</option>
+                                <!-- Datos dinámicos -->
+                            </select>
                         </div>
 
                         <div class="col-md-4">

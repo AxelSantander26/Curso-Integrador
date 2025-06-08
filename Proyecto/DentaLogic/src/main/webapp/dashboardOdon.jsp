@@ -1,233 +1,276 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>Clínica Dental CABES</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-    
+    <title>Control de Asistencia</title>
     <style>
-         :root {
-                --sidebar-bg: #19414b;
-                --accent-color: #1e8e67;
-                --card-bg: #ffffff;
-                --header-height: 60px;
-            }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #e0f7fa, #ffffff);
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            line-height: 1.5;
             margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #212529;
         }
-
-       
-            header {
-                height: var(--header-height);
-                background-color: var(--sidebar-bg);
-                color: white;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                padding: 0 30px;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-            }
-
-            header h1 {
-                font-size: 20px;
-                margin: 0;
-            }
-
         .container {
-            margin-top: 40px;
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        h1 {
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            color: #343a40;
+        }
+        .clock-container {
+            text-align: center;
+            margin: 1.5rem 0;
+        }
+        .current-time {
+            font-size: 1.4rem;
+            font-weight: 400;
+            color: #495057;
+            letter-spacing: 1px;
+        }
+        .time-section {
+            margin-bottom: 1.8rem;
+        }
+        .time-section h2 {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #495057;
+            border-bottom: 1px solid #e9ecef;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .time-info {
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
+            margin-bottom: 0.8rem;
         }
-
-        .card {
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
-            width: 500px;
-            background-color: #fff;
+        .time-label {
+            font-weight: 500;
+            color: #6c757d;
         }
-
-        .info-table {
+        .time-value {
+            font-weight: 400;
+            color: #212529;
+        }
+        .attendance-status {
+            padding: 1rem;
+            border-radius: 6px;
+            margin: 2rem 0;
+            text-align: center;
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+        }
+        .btn {
+            display: block;
             width: 100%;
-            margin: 20px 0;
-            border-collapse: collapse;
-        }
-
-        .info-table th {
-            text-align: left;
-            padding: 8px;
-            background-color: #e0f2f1;
-            width: 30%;
-        }
-
-        .info-table td {
-            padding: 8px;
-        }
-
-        button {
-            padding: 12px 24px;
-            background-color: #00796b;
+            max-width: 300px;
+            margin: 1.5rem auto;
+            padding: 0.75rem;
+            background-color: #343a40;
             color: white;
             border: none;
-            border-radius: 8px;
-            font-size: 1em;
+            border-radius: 6px;
+            font-size: 1rem;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.2s;
         }
-
-        button:hover {
-            background-color: #004d40;
+        .btn:hover {
+            background-color: #495057;
         }
-
-        .timestamp {
-            margin-top: 10px;
-            color: #004d40;
+        .btn:disabled {
+            background-color: #e9ecef;
+            color: #adb5bd;
+            cursor: not-allowed;
         }
-
-        
-            .modal {
-                display: none;
-                position: fixed;
-                z-index: 999;
-                left: 0;
-                top: 0;
-                width: 100%;
-                height: 100%;
-                background-color: rgba(0,0,0,0.4);
-                justify-content: center;
-                align-items: center;
-            }
-
-            .modal-content {
-                background-color: white;
-                padding: 30px 40px;
-                border-radius: 15px;
-                text-align: center;
-                max-width: 400px;
-                box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            }
-
-            .modal-content h3 {
-                color: #19414b;
-            }
-
-            .modal-content p {
-                margin-top: 10px;
-                color: #333;
-            }
-
-            .modal-content button {
-                background-color: #19414b;
-            }
+        .message {
+            padding: 0.75rem;
+            border-radius: 6px;
+            margin: 1rem 0;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        .success {
+            background-color: #e6f7ee;
+            color: #28a745;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background-color: #fae8e8;
+            color: #dc3545;
+            border: 1px solid #f5c6cb;
+        }
+        .warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+        }
+        .status-badge {
+            padding: 0.3rem 0.6rem;
+            border-radius: 1rem;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin-left: 0.5rem;
+        }
+        .status-success {
+            background-color: #e6f7ee;
+            color: #28a745;
+        }
+        .status-warning {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        .status-danger {
+            background-color: #fae8e8;
+            color: #dc3545;
+        }
+        .nav {
+            display: flex;
+            justify-content: flex-end;
+            padding: 1rem;
+        }
+        .nav-link {
+            color: #495057;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        .nav-link:hover {
+            text-decoration: underline;
+        }
+        .spinner-border {
+            vertical-align: text-top;
+            width: 1rem;
+            height: 1rem;
+            border-width: 0.15em;
+        }
     </style>
 </head>
 <body>
-  <header>
-    <h1>Clínica Dental CABES</h1>
+    <nav class="nav">
+        <a href="logout" class="nav-link">Cerrar sesión</a>
+    </nav>
 
-    <div class="dropdown d-flex align-items-center" style="gap: 12px;">
-        <div class="text-end">
-            <p class="mb-0">Hola, <strong>${usuario.nombre} ${usuario.apellido}</strong></p>
-            <p class="user-role mb-0" style="font-size: 0.85rem;">${usuario.rol}</p>
+    <div class="container">
+        <h1>Bienvenido, ${usuario.nombre} ${usuario.apellido}</h1>
+        
+        <div class="clock-container">
+            <div class="current-time" id="currentTime"></div>
         </div>
-
-        <button class="btn btn-link text-white p-0 dropdown-toggle" type="button" id="userDropdown"
-                data-bs-toggle="dropdown" aria-expanded="false" style="line-height: 1;">
-            <i class="bi bi-chevron-down" style="font-size: 1rem;"></i>
-        </button>
-
-        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-            <li>
-                <a class="dropdown-item" href="logout">
-                    <i class="bi bi-box-arrow-right me-2"></i> Cerrar sesión
-                </a>
-            </li>
-        </ul>
+        
+        <%!
+            public String formatTo12Hour(String time24) {
+                if (time24 == null || time24.isEmpty() || time24.equals("null")) return "--:--";
+                try {
+                    String[] parts = time24.split(":");
+                    int hour = Integer.parseInt(parts[0]);
+                    int minute = parts.length > 1 ? Integer.parseInt(parts[1]) : 0;
+                    String period = (hour >= 12) ? "PM" : "AM";
+                    if (hour == 0) hour = 12;
+                    else if (hour > 12) hour -= 12;
+                    return String.format("%d:%02d %s", hour, minute, period);
+                } catch (Exception e) {
+                    return time24;
+                }
+            }
+        %>
+        
+        <div class="time-section">
+            <h2>Horario programado</h2>
+            <div class="time-info">
+                <span class="time-label">Hora de entrada:</span>
+                <span class="time-value"><%= formatTo12Hour(request.getAttribute("horaEntradaEstablecida") != null ? request.getAttribute("horaEntradaEstablecida").toString() : "") %></span>
+            </div>
+        </div>
+        
+        <div class="time-section">
+            <h2>Registro de hoy</h2>
+            <div class="time-info">
+                <span class="time-label">Hora marcada:</span>
+                <span class="time-value">
+                    <c:choose>
+                        <c:when test="${yaMarcada}">
+                            <%= formatTo12Hour(request.getAttribute("horaMarcada") != null ? request.getAttribute("horaMarcada").toString() : "") %>
+                        </c:when>
+                        <c:otherwise>
+                            Pendiente
+                        </c:otherwise>
+                    </c:choose>
+                </span>
+            </div>
+        </div>
+        
+        <c:if test="${yaMarcada}">
+            <div class="attendance-status">
+                <strong>Estado:</strong> 
+                <c:choose>
+                    <c:when test="${estadoAsistencia == 'Puntual'}">
+                        <span class="status-badge status-success">✓ Puntual</span>
+                    </c:when>
+                    <c:when test="${estadoAsistencia == 'Tardanza'}">
+                        <span class="status-badge status-warning">⌛ Tardanza</span>
+                    </c:when>
+                    <c:when test="${estadoAsistencia == 'Ausente'}">
+                        <span class="status-badge status-danger">✗ Ausente</span>
+                    </c:when>
+                    <c:otherwise>
+                        ${estadoAsistencia}
+                    </c:otherwise>
+                </c:choose>
+                <br>Asistencia registrada
+            </div>
+        </c:if>
+        
+        <c:if test="${tiempoRestante != null && tiempoRestante < 15 && tiempoRestante > 0 && !yaMarcada}">
+            <div class="message warning">
+                ⚠ Atención: Tienes menos de ${tiempoRestante} minutos para marcar a tiempo
+            </div>
+        </c:if>
+        
+        <c:if test="${not yaMarcada}">
+            <form method="post" action="dashboardOdon" id="asistenciaForm">
+                <button type="submit" class="btn" id="submitBtn">
+                    Registrar mi asistencia
+                </button>
+            </form>
+        </c:if>
+        
+        <c:if test="${not empty mensaje}">
+            <div class="message ${mensaje.contains('éxito') ? 'success' : 'error'}">
+                ${mensaje}
+            </div>
+        </c:if>
     </div>
-</header>
 
-<!-- ✅ CORREGIDO: usar idEmpleado -->
-<input type="hidden" id="empId" value="${usuario.idEmpleado}">
-
-<div class="container">
-    <div class="card">
-        <h2>Bienvenido, Dr. ${usuario.nombre} ${usuario.apellido}</h2>
-        <p>Registre su asistencia antes de comenzar la atención a los pacientes.</p>
-
-        <table class="info-table">
-            <tr>
-                <th>Servicio</th>
-                <td>Consulta General</td>
-            </tr>
-            <tr>
-                <th>Turno</th>
-                <td>10:30 a 12:00</td>
-            </tr>
-            <tr>
-                <th>Fecha</th>
-                <td id="fechaActual"></td>
-            </tr>
-        </table>
-
-        <button onclick="registrarAsistencia()">Registrar asistencia</button>
-        <div class="timestamp" id="horaActual"></div>
-    </div>
-</div>
-
-<!-- Modal -->
-<div class="modal" id="modal">
-    <div class="modal-content">
-        <h3>✔ Asistencia registrada</h3>
-        <p id="horaRegistro"></p>
-        <button onclick="cerrarModal()">Aceptar</button>
-    </div>
-</div>
-
-<!-- ✅ Script completo -->
-<script>
-    function actualizarHora() {
-        const ahora = new Date();
-        const horaTexto = ahora.toLocaleTimeString('es-PE');
-        const fechaTexto = ahora.toLocaleDateString('es-PE');
-        document.getElementById("horaActual").textContent = "Hora actual: " + horaTexto;
-        document.getElementById("fechaActual").textContent = fechaTexto;
-    }
-
-    setInterval(actualizarHora, 1000);
-    actualizarHora();
-
-    function registrarAsistencia() {
-        const empId = document.getElementById("empId").value;
-
-        fetch("registrar-asistencia", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: "emp_id=" + empId
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === "ok") {
-                const hora = new Date().toLocaleTimeString('es-PE');
-                document.getElementById("horaRegistro").textContent = "Hora registrada: " + hora;
-                document.getElementById("modal").style.display = "flex";
-            } else {
-                alert("Error al registrar asistencia.");
+    <script>
+        function updateClock() {
+            const options = { 
+                hour: '2-digit', 
+                minute: '2-digit', 
+                second: '2-digit',
+                hour12: true 
+            };
+            document.getElementById('currentTime').textContent = 
+                new Date().toLocaleTimeString('es-ES', options);
+            setTimeout(updateClock, 1000);
+        }
+        
+        document.getElementById('asistenciaForm')?.addEventListener('submit', function(e) {
+            const btn = document.getElementById('submitBtn');
+            if(btn) {
+                btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status"></span> Procesando...';
+                btn.disabled = true;
             }
         });
-    }
-
-    function cerrarModal() {
-        document.getElementById("modal").style.display = "none";
-    }
-</script>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
+        
+        window.addEventListener('load', updateClock);
+    </script>
 </body>
 </html>

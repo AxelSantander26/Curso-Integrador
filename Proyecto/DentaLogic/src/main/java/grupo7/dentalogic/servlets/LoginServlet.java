@@ -6,38 +6,42 @@ import grupo7.dentalogic.model.Usuario;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 
-
-
-    @WebServlet("/login")
+@WebServlet("/login")
 public class LoginServlet extends HttpServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Cuando alguien va a /login, mostrar la vista login.jsp
+        request.getRequestDispatcher("login.jsp").forward(request, response);
+    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String usuario = request.getParameter("usuario");
         String password = request.getParameter("password");
 
-        // Validar el usuario en la base de datos
         Usuario usuarioValidado = UsuarioDAO.validarUsuario(usuario, password);
 
         if (usuarioValidado != null) {
+            // Almacenar el usuario en la sesión
             HttpSession session = request.getSession();
             session.setAttribute("usuario", usuarioValidado);
 
-            int rolId = usuarioValidado.getIdRol(); // Asegúrate de tener este getter en el modelo Usuario
-            String username = usuarioValidado.getUsuario(); // Asume que esto devuelve el usuario (usr_user)
+            // Almacenar el idEmpleado en la sesión
+            session.setAttribute("empId", usuarioValidado.getIdEmpleado());  // Guardamos el idEmpleado
 
-            // Redirección por rol y patrón de nombre de usuario
+            int rolId = usuarioValidado.getIdRol();
+            String username = usuarioValidado.getUsuario();
+
             if (rolId == 1 && username.matches("^A\\d{8}$")) {
-                response.sendRedirect("dashboard");
+                // Redirigir al dashboard de administrador
+                response.sendRedirect("dashboardAdmin");
             } else if (rolId == 3 && username.matches("^O\\d{8}$")) {
-                response.sendRedirect("dashboardOdon.jsp");
+                // Redirigir al dashboard del odontólogo
+                response.sendRedirect("dashboardOdon");
             } else {
-                // Si no cumple con el patrón o el rol, redirigir a un error o login con mensaje
                 request.setAttribute("error", "Usuario no autorizado o formato de usuario incorrecto.");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             }

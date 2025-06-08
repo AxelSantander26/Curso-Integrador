@@ -120,17 +120,13 @@
             <i class="bi bi-cash-coin fs-4"></i>
             <small>Bonos</small>
         </a>
-        <a href="<c:url value='/pagos' />" class="d-flex flex-column align-items-center text-white text-decoration-none mb-3">
-            <i class="bi bi-credit-card fs-4"></i>
-            <small>Pagos</small>
+        <a href="<c:url value='/pagos.jsp' />" class="d-flex flex-column align-items-center text-white text-decoration-none mb-3">
+            <i class="bi bi-file-earmark-spreadsheet fs-4"></i>
+            <small>Planillas</small>
         </a>
         <a href="<c:url value='/periodos' />" class="d-flex flex-column align-items-center text-white text-decoration-none mb-3">
             <i class="bi bi-calendar-check fs-4"></i>
             <small>Periodos</small>
-        </a>
-        <a href="<c:url value='/planillas' />" class="d-flex flex-column align-items-center text-white text-decoration-none mb-3">
-            <i class="bi bi-file-earmark-spreadsheet fs-4"></i>
-            <small>Planillas</small>
         </a>
     </div>
 </div>

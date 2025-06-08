@@ -1,188 +1,304 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %> <!-- NUEVO -->
-
+<%@ page import="java.util.*, java.text.SimpleDateFormat, grupo7.dentalogic.model.AsistenciaInfo" %>
+<%@ page contentType="text/html; charset=UTF-8" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Módulo de Asistencias</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <meta charset="UTF-8" />
+    <title>Asistencias Mensuales</title>
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
     <script src="assets/js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" />
     <style>
-         :root {
-            --sidebar-bg: #19414b;
-            --card-bg: #1a4d40;
+        /* Estilos generales */
+        .calendar-container {
+            overflow-x: auto;
+            margin-top: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-        body {
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .calendar-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        .calendar-nav {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .calendar-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+        .calendar-table th, .calendar-table td {
+            padding: 10px 8px;
+            text-align: center;
+            border: 1px solid #e9ecef;
+            vertical-align: middle;
+        }
+        .calendar-table th {
+            background-color: #f8f9fa;
+            font-weight: 500;
+            border-bottom: 2px solid #dee2e6;
+        }
+        .employee-id-header {
+            position: sticky;
+            left: 0;
+            z-index: 6;
+            background-color: #f8f9fa;
+            min-width: 60px;
+        }
+        .employee-name-header {
+            position: sticky;
+            left: 60px;
+            z-index: 6;
+            background-color: #f8f9fa;
+            min-width: 200px;
+            text-align: left;
+            padding-left: 15px;
+        }
+        .employee-id {
+            position: sticky;
+            left: 0;
+            z-index: 4;
+            background-color: white;
+            font-weight: 500;
+        }
+        .employee-name {
+            position: sticky;
+            left: 60px;
+            z-index: 4;
+            background-color: white;
+            text-align: left;
+            padding-left: 15px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+        .day-header {
+            position: sticky;
+            top: 0;
+            z-index: 5;
+            background-color: #f8f9fa;
+            min-width: 40px;
+        }
+        .weekend {
             background-color: #f8f9fa;
         }
-        .main-content {
-            margin-top: 40px; /* BAJAR MAIN */
+        .today {
+            background-color: #e3f2fd;
         }
-        .table td, .table th {
-            color: #000;
+        .attendance-present {
+            color: #2e7d32;
+            font-weight: 500;
         }
-        .table {
-            min-width: 900px; /* AGRANDAR ANCHO DE LA TABLA */
+        .attendance-absent {
+            color: #c62828;
         }
-        .tag {
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 0.9em;
-            color: white;
-            cursor: help;
-            display: inline-block;
-            min-width: 120px;
-            text-align: center;
+        .attendance-late {
+            color: #f9a825;
         }
-        .asistio { background-color: #2e7d32; }
-        .falto { background-color: #c62828; }
-        .tarde { background-color: #f9a825; color: #000; }
-        .justificado { background-color: #1565c0; }
-        .desconocido { background-color: #6c757d; }
-        th.fecha-col, td.fecha-col {
-    min-width: 130px;
-    white-space: nowrap;
-}
-
+        .attendance-justified {
+            font-style: italic;
+        }
+        .day-number {
+            font-size: 0.9rem;
+        }
+        .day-name {
+            font-size: 0.75rem;
+            color: #6c757d;
+            text-transform: uppercase;
+        }
+        button, select {
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
-
-<jsp:include page="components/sidebar-navbar.jsp"/>
-
+<jsp:include page="components/sidebar-navbar.jsp" />
 <main class="main-content">
-    <div class="container py-5">
+    <div class="content-wrapper">
+        <%
+            String paramYear = request.getParameter("year");
+            String paramMonth = request.getParameter("month");
 
-        <div class="filter-section mb-4">
-            <div class="row g-3">
-                <div class="col-md-3">
-                    <label for="filterName" class="form-label">Filtrar por Nombre</label>
-                    <input type="text" class="form-control" id="filterName" placeholder="Buscar por nombre">
-                </div>
-                <div class="col-md-3">
-                    <label for="filterDNI" class="form-label">Filtrar por DNI</label>
-                    <input type="text" class="form-control" id="filterDNI" placeholder="Buscar por DNI">
-                </div>
-                <div class="col-md-3">
-                    <label for="filterDate" class="form-label">Filtrar por Fecha</label>
-                    <input type="date" class="form-control" id="filterDate" value="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()) %>">
-                </div>
-                <div class="col-md-3 d-flex align-items-end">
-                    <button class="btn btn-primary w-100" id="filterBtn">Filtrar</button>
-                </div>
+            Calendar cal = Calendar.getInstance();
+            int year, month;
+
+            if (paramYear != null && paramMonth != null) {
+                try {
+                    year = Integer.parseInt(paramYear);
+                    month = Integer.parseInt(paramMonth);
+                    cal.set(year, month, 1);
+                } catch (Exception e) {
+                    year = cal.get(Calendar.YEAR);
+                    month = cal.get(Calendar.MONTH);
+                }
+            } else {
+                year = cal.get(Calendar.YEAR);
+                month = cal.get(Calendar.MONTH);
+            }
+
+            cal.set(year, month, 1);
+            int diasEnMes = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+            int hoyDia = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+            int hoyMes = Calendar.getInstance().get(Calendar.MONTH);
+            int hoyYear = Calendar.getInstance().get(Calendar.YEAR);
+
+            List<AsistenciaInfo> empleados = (List<AsistenciaInfo>) request.getAttribute("empleados");
+            List<AsistenciaInfo> asistencias = (List<AsistenciaInfo>) request.getAttribute("asistencias");
+
+            Map<Integer, Map<Integer, AsistenciaInfo>> asistenciasPorEmpleado = new HashMap<>();
+            for (AsistenciaInfo asi : asistencias) {
+                Calendar tempCal = Calendar.getInstance();
+                tempCal.setTime(asi.getFecha());
+                int asiYear = tempCal.get(Calendar.YEAR);
+                int asiMonth = tempCal.get(Calendar.MONTH);
+                int asiDay = tempCal.get(Calendar.DAY_OF_MONTH);
+
+                if (asiYear == year && asiMonth == month) {
+                    int empId = asi.getEmpId();
+                    if (!asistenciasPorEmpleado.containsKey(empId)) {
+                        asistenciasPorEmpleado.put(empId, new HashMap<Integer, AsistenciaInfo>());
+                    }
+                    asistenciasPorEmpleado.get(empId).put(asiDay, asi);
+                }
+            }
+
+            String[] nombresDias = {"Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"};
+            String[] nombresMeses = {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"};
+        %>
+
+        <div class="calendar-header">
+            <h4 class="calendar-title">Asistencias Mensuales</h4>
+
+            <form id="filtroForm" action="asistencias" method="get" class="calendar-nav">
+                <label for="selectMes">Mes:</label>
+                <select id="selectMes" name="month" required>
+                    <% for (int m = 0; m < 12; m++) { %>
+                        <option value="<%= m %>" <%= (m == month) ? "selected" : "" %>><%= nombresMeses[m] %></option>
+                    <% } %>
+                </select>
+
+                <label for="selectYear">Año:</label>
+                <select id="selectYear" name="year" required>
+                    <%
+                        int yearInicio = hoyYear - 5;
+                        int yearFin = hoyYear + 5;
+                        for (int y = yearInicio; y <= yearFin; y++) {
+                    %>
+                        <option value="<%= y %>" <%= (y == year) ? "selected" : "" %>><%= y %></option>
+                    <% } %>
+                </select>
+
+                <button type="button" class="btn btn-secondary btn-sm" id="btnHoy">Hoy</button>
+            </form>
+
             </div>
-        </div>
-
-        <div class="mb-4 d-flex justify-content-between align-items-center">
-            <h4>Asistencias de Hoy</h4>
-            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#registerAttendanceModal">
-                <i class="bi bi-plus-circle"></i> Registrar Asistencia
-            </button>
-        </div>
-
-        <div class="table-responsive">
-            <table class="table table-bordered table-hover align-middle">
-                <thead class="table-primary text-center">
+        <input type="text" id="filtroNombre" placeholder="Buscar por nombre o apellido" class="form-control form-control-sm" style="max-width: 250px;" />
+        
+        <div class="calendar-container">
+            <table class="calendar-table">
+                <thead>
                     <tr>
-                                        <th class="fecha-col">Fecha</th> <!-- APLICADA AQUÍ -->
-
-                        <th>Nombre y Apellido</th>
-                        <th>ID Empleado</th>
-                        <th>Hora Entrada</th>
-                        <th>Hora Llegada</th>
-                        <th>Hora Salida</th>
-                        <th>Tipo de Asistencia</th>
-                        <th>DNI</th>
-                        <th>Observaciones</th>
-                        <th>Acciones</th>
+                        <th class="employee-id-header">ID</th>
+                        <th class="employee-name-header">Empleado</th>
+                        <% for (int d = 1; d <= diasEnMes; d++) {
+                            cal.set(year, month, d);
+                            int diaSemana = cal.get(Calendar.DAY_OF_WEEK);
+                            boolean esHoy = (d == hoyDia && month == hoyMes && year == hoyYear);
+                            String clase = "day-header";
+                            if (diaSemana == Calendar.SATURDAY || diaSemana == Calendar.SUNDAY) clase += " weekend";
+                            if (esHoy) clase += " today";
+                        %>
+                        <th class="<%= clase %>">
+                            <div class="day-number"><%= d %></div>
+                            <div class="day-name"><%= nombresDias[diaSemana - 1] %></div>
+                        </th>
+                        <% } %>
                     </tr>
                 </thead>
                 <tbody>
-                    <c:forEach var="asis" items="${listaAsistencias}">
-                        <tr data-id="${asis.empId}" data-tipo="${asis.tipoAsistencia}">
-                            <td><fmt:formatDate value="${asis.fechaRegistroAsis}" pattern="yyyy-MM-dd" /></td>
-                            <td>${asis.nombreCompleto}</td>
-                            <td>${asis.empId}</td>
-                            <td>09:00</td>
-                            <td>
-                                <c:choose>
-                                    <c:when test="${not empty asis.horaLlegada}">
-                                        <fmt:formatDate value="${asis.horaLlegada}" pattern="HH:mm" />
-                                    </c:when>
-                                    <c:otherwise>---</c:otherwise>
-                                </c:choose>
-                            </td>
-                            <td>17:00</td>
-                            <td>
-                               <c:choose>
-        <c:when test="${fn:toLowerCase(asis.tipoAsistencia) == 'asistio'}">
-            <span class="tag asistio" title="Empleado asistió puntualmente">ASISTIÓ</span>
-        </c:when>
-        <c:when test="${fn:toLowerCase(asis.tipoAsistencia) == 'tardanza'}">
-            <span class="tag tarde" title="Empleado llegó tarde">LLEGÓ TARDE</span>
-        </c:when>
-        <c:when test="${fn:toLowerCase(asis.tipoAsistencia) == 'falta'}">
-            <span class="tag falto" title="Empleado no se presentó">FALTÓ</span>
-        </c:when>
-        <c:when test="${fn:toLowerCase(asis.tipoAsistencia) == 'justificado'}">
-            <span class="tag justificado" title="Justificación registrada">JUSTIFICADO</span>
-        </c:when>
-        <c:otherwise>
-            <span class="tag desconocido" title="Tipo no reconocido">SIN DATOS</span>
-        </c:otherwise>
-    </c:choose>
-                            </td>
-                            <td>${asis.empDni}</td>
-                            <td>
-                                <input type="text" class="form-control form-control-sm" value="Sin observaciones" />
-                            </td>
-                            <td>
-                                <button class="btn btn-info btn-sm edit-btn">Editar</button>
-                                <button class="btn btn-warning btn-sm justify-btn">Justificar</button>
-                            </td>
-                        </tr>
-                    </c:forEach>
+                    <% if (empleados != null) {
+                        for (AsistenciaInfo emp : empleados) {
+                            int empId = emp.getEmpId();
+                            String nombreCompleto = emp.getNombre() + " " + emp.getApellido();
+                            Map<Integer, AsistenciaInfo> asistenciasEmp = asistenciasPorEmpleado.get(empId);
+                    %>
+                    <tr>
+                        <td class="employee-id"><%= empId %></td>
+                        <td class="employee-name"><%= nombreCompleto %></td>
+                        <% for (int d = 1; d <= diasEnMes; d++) {
+                            cal.set(year, month, d);
+                            int diaSemana = cal.get(Calendar.DAY_OF_WEEK);
+                            boolean esHoy = (d == hoyDia && month == hoyMes && year == hoyYear);
+                            String clase = "";
+                            if (diaSemana == Calendar.SATURDAY || diaSemana == Calendar.SUNDAY) clase += "weekend ";
+                            if (esHoy) clase += "today";
+
+                            String contenido = "-";
+                            String estadoClass = "";
+                            if (asistenciasEmp != null && asistenciasEmp.containsKey(d)) {
+                                AsistenciaInfo asi = asistenciasEmp.get(d);
+                                contenido = asi.getEstado();
+                                if (asi.getEstado() != null) {
+                                    switch (asi.getEstado().toLowerCase()) {
+                                        case "presente": estadoClass = "attendance-present"; break;
+                                        case "ausente": estadoClass = "attendance-absent"; break;
+                                        case "tarde": estadoClass = "attendance-late"; break;
+                                    }
+                                }
+                                if (asi.isJustificado()) {
+                                    estadoClass += " attendance-justified";
+                                }
+                            }
+                        %>
+                        <td class="<%= clase %>"><span class="<%= estadoClass %>"><%= contenido %></span></td>
+                        <% } %>
+                    </tr>
+                    <% }
+                    } else { %>
+                    <tr><td colspan="<%= diasEnMes + 2 %>">No hay datos para mostrar</td></tr>
+                    <% } %>
                 </tbody>
             </table>
         </div>
-
     </div>
 </main>
 
-<div class="modal fade" id="registerAttendanceModal" tabindex="-1" aria-labelledby="registerAttendanceModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title" id="registerAttendanceModalLabel">Registrar Asistencia</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-            </div>
-            <div class="modal-body">
-                <p class="text-muted">Formulario para registrar nueva asistencia.</p>
-            </div>
-        </div>
-    </div>
-</div>
-
 <script>
-    document.getElementById('filterBtn').addEventListener('click', function() {
-        const nameFilter = document.getElementById('filterName').value.toLowerCase();
-        const dniFilter = document.getElementById('filterDNI').value.toLowerCase();
-        const dateFilter = document.getElementById('filterDate').value;
-
-        document.querySelectorAll('tbody tr').forEach(row => {
-            const name = row.cells[1].textContent.toLowerCase();
-            const dni = row.cells[7].textContent.toLowerCase();
-            const date = row.cells[0].textContent;
-
-            const matches = name.includes(nameFilter) && dni.includes(dniFilter) && date === dateFilter;
-            row.style.display = matches ? '' : 'none';
-        });
-    });
+    document.getElementById('selectMes').onchange = function () {
+        document.getElementById('filtroForm').submit();
+    };
+    document.getElementById('selectYear').onchange = function () {
+        document.getElementById('filtroForm').submit();
+    };
+    document.getElementById('btnHoy').onclick = function () {
+        var hoy = new Date();
+        var mes = hoy.getMonth();
+        var anio = hoy.getFullYear();
+        window.location.href = 'asistencias?month=' + mes + '&year=' + anio;
+    };
+    document.getElementById('filtroNombre').oninput = function () {
+        var filtro = this.value.toLowerCase();
+        var filas = document.querySelectorAll('.calendar-table tbody tr');
+        for (var i = 0; i < filas.length; i++) {
+            var celdaNombre = filas[i].querySelector('.employee-name');
+            if (celdaNombre) {
+                var nombreTexto = celdaNombre.textContent.toLowerCase();
+                filas[i].style.display = nombreTexto.includes(filtro) ? '' : 'none';
+            }
+        }
+    };
 </script>
 
 </body>

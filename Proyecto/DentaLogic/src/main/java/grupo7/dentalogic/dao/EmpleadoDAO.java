@@ -131,38 +131,4 @@ public class EmpleadoDAO {
         return emp;
     }
 
-public List<Empleado> obtenerSoloConEspecialidad() {
-    List<Empleado> empleados = new ArrayList<>();
-    String sql = "SELECT e.emp_id, e.emp_dni, e.emp_nom, e.emp_ape, e.emp_email, e.emp_tel, e.emp_fec, e.emp_sal, e.esp_id, es.esp_nom "
-               + "FROM empleados e "
-               + "INNER JOIN especialidades es ON e.esp_id = es.esp_id "
-               + "WHERE e.esp_id IS NOT NULL";
-
-    try (PreparedStatement ps = conexion.prepareStatement(sql);
-         ResultSet rs = ps.executeQuery()) {
-
-        while (rs.next()) {
-            Empleado emp = new Empleado();
-            emp.setEmpId(rs.getInt("emp_id"));
-            emp.setEmpDni(rs.getString("emp_dni"));
-            emp.setEmpNom(rs.getString("emp_nom"));
-            emp.setEmpApe(rs.getString("emp_ape"));
-            emp.setEmpEmail(rs.getString("emp_email"));
-            emp.setEmpTel(rs.getString("emp_tel"));
-            emp.setEmpFec(rs.getDate("emp_fec"));
-            emp.setEmpSal(rs.getDouble("emp_sal"));
-            emp.setEspId(rs.getInt("esp_id"));
-            emp.setEspecialidad(rs.getString("esp_nom"));
-
-            empleados.add(emp);
-        }
-
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-
-    return empleados;
-}
-
-
 }

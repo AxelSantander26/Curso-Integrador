@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 14-05-2025 a las 03:12:33
+-- Tiempo de generación: 08-06-2025 a las 20:50:01
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `bd_clinica`
+-- Base de datos: `db_clinica`
 --
 
 -- --------------------------------------------------------
@@ -28,10 +28,22 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `asistencias` (
-  `asis_id` int(11) NOT NULL,
-  `asis_fec` date NOT NULL,
-  `hora_entrada` time NOT NULL
+  `asi_id` int(11) NOT NULL,
+  `emp_id` int(11) NOT NULL,
+  `fecha` date NOT NULL,
+  `hora_entrada` time DEFAULT NULL,
+  `hora_salida` time DEFAULT NULL,
+  `estado` enum('PUNTUAL','TARDANZA','FALTA') NOT NULL,
+  `observaciones` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `asistencias`
+--
+
+INSERT INTO `asistencias` (`asi_id`, `emp_id`, `fecha`, `hora_entrada`, `hora_salida`, `estado`, `observaciones`) VALUES
+(2, 35, '2025-06-07', '08:05:00', '17:00:00', 'TARDANZA', 'Llegó tarde por tráfico'),
+(34, 56, '2025-06-08', '15:04:51', NULL, 'PUNTUAL', NULL);
 
 -- --------------------------------------------------------
 
@@ -51,25 +63,9 @@ CREATE TABLE `bonos` (
 --
 
 INSERT INTO `bonos` (`bono_id`, `bono_nom`, `bono_can`, `bono_desc`) VALUES
-(1, 'prueba', 54.00, 'bono de prueba');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `detalle_asistencias`
---
-
-CREATE TABLE `detalle_asistencias` (
-  `detasis_id` int(11) NOT NULL,
-  `asis_id` int(11) NOT NULL,
-  `emp_id` int(11) NOT NULL,
-  `hora_llegada` time DEFAULT NULL,
-  `tipo_asistencia` varchar(20) NOT NULL,
-  `descuento` decimal(10,2) DEFAULT NULL,
-  `justificacion` text DEFAULT NULL,
-  `observaciones` text DEFAULT NULL,
-  `fecha_registro` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+(1, 'prueba', 54.00, 'bono de prueba'),
+(3, 'bone 3', 100.00, 'Q'),
+(4, 'extra', 100.00, '...');
 
 -- --------------------------------------------------------
 
@@ -112,7 +108,7 @@ CREATE TABLE `empleados` (
 
 INSERT INTO `empleados` (`emp_id`, `emp_dni`, `emp_nom`, `emp_ape`, `emp_email`, `emp_tel`, `esp_id`, `emp_fec`, `emp_sal`) VALUES
 (33, '76432189', 'Axel Jesus', 'Santander Alcarraz', 'axelsantander@gmail.com', '912345678', 1, '2025-01-15', 5000.00),
-(34, '75643829', 'Lucía Marisol', 'Cruz Villanueva', 'luciacruz@gmail.com', '913456789', NULL, '2025-01-22', 2800.00),
+(34, '75643829', 'Lucía Marisol', 'Cruz Villanueva', 'luciacruz@gmail.com', '913456789', 1, '2025-01-22', 2800.00),
 (35, '73214567', 'Carlos Javier', 'Quispe Salazar', 'carlosquispe@gmail.com', '914567890', 1, '2025-01-25', 3500.00),
 (36, '74321890', 'Andrea Paola', 'Gómez Huamán', 'andreagomez@gmail.com', '915678901', 2, '2025-01-28', 3500.00),
 (37, '75478901', 'Luis Enrique', 'Paredes Soto', 'luisparedes@gmail.com', '916789012', 3, '2025-02-01', 3500.00),
@@ -135,14 +131,15 @@ INSERT INTO `empleados` (`emp_id`, `emp_dni`, `emp_nom`, `emp_ape`, `emp_email`,
 (54, '72145689', 'Anahí Julissa', 'Gonzales Llosa', 'anahigonzales@gmail.com', '933456789', 2, '2025-04-15', 3500.00),
 (55, '73256790', 'Bryan Ariel', 'Zambrano Olivares', 'bryanzambrano@gmail.com', '934567890', 3, '2025-04-20', 3500.00),
 (56, '74367801', 'Mariela Edith', 'Núñez Rengifo', 'marielanunez@gmail.com', '935678901', 4, '2025-04-25', 3500.00),
-(57, '75478923', 'Franco Elías', 'Chávez Delgado', 'francochavez@gmail.com', '936789012', 5, '2025-04-28', 3500.00),
+(57, '75478923', 'Franco Elías', 'Chávez Delgado', 'francochavez@gmail.com', '936789012', NULL, '2025-04-28', 3500.00),
 (58, '76589034', 'Zulema Estefany', 'Mejía Carbajal', 'zulemamejia@gmail.com', '937890123', 6, '2025-04-30', 3500.00),
 (59, '77690145', 'Kevin Alexander', 'Torres Ayala', 'kevintorres@gmail.com', '938901234', 1, '2025-05-01', 3500.00),
 (60, '78701256', 'Natalie Ivonne', 'Benavente Quiroz', 'nataliebenavente@gmail.com', '939012345', 2, '2025-05-05', 3500.00),
 (61, '79812367', 'Samuel Esteban', 'Huerta Vigo', 'samuelhuerta@gmail.com', '940123456', 3, '2025-05-08', 3500.00),
 (62, '70923478', 'Pamela Alejandra', 'Quintana Rosas', 'pamelaquintana@gmail.com', '941234567', 4, '2025-05-10', 3500.00),
 (63, '71034589', 'Yair Rodrigo', 'Silva Castañeda', 'yairsilva@gmail.com', '942345678', 5, '2025-05-12', 3500.00),
-(64, '72145690', 'Fiorella Celeste', 'Delgado Ñahui', 'fiorelladelgado@gmail.com', '943456789', 6, '2025-05-15', 3500.00);
+(64, '72145690', 'Fiorella Celeste', 'Delgado Ñahui', 'fiorelladelgado@gmail.com', '943456789', 6, '2025-05-15', 3500.00),
+(67, '7234234', 'juan david', 'peres fernadez', 'juan@gmail.com', '923424234', 1, '2025-05-07', 111.00);
 
 -- --------------------------------------------------------
 
@@ -162,12 +159,47 @@ CREATE TABLE `especialidades` (
 --
 
 INSERT INTO `especialidades` (`esp_id`, `esp_nom`, `esp_desc`, `esp_ph`) VALUES
-(1, 'Odontología General', 'Tratamientos generales dentales', 50.00),
-(2, 'Ortodoncia', 'Corrección de dientes mal alineados', 60.00),
-(3, 'Endodoncia', 'Tratamiento de conductos', 70.00),
-(4, 'Periodoncia', 'Tratamiento de encías', 55.00),
-(5, 'Cirugía Oral', 'Extracciones y cirugías menores', 80.00),
-(6, 'Implantología', 'Colocación de implantes dentales', 90.00);
+(1, 'Odontología General', 'Tratamientos generales dentales', 28.00),
+(2, 'Ortodoncia', 'Corrección de dientes mal alineados', 32.00),
+(3, 'Endodoncia', 'Tratamiento de conductos', 36.00),
+(4, 'Periodoncia', 'Tratamiento de encías', 30.00),
+(5, 'Cirugía Oral', 'Extracciones y cirugías menores', 40.00),
+(6, 'Implantología', 'Colocación de implantes dentales', 45.00);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `horarios`
+--
+
+CREATE TABLE `horarios` (
+  `hor_id` int(11) NOT NULL,
+  `hora_entrada` time NOT NULL,
+  `hora_salida` time NOT NULL,
+  `descripcion` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `horarios`
+--
+
+INSERT INTO `horarios` (`hor_id`, `hora_entrada`, `hora_salida`, `descripcion`) VALUES
+(1, '15:00:00', '20:00:00', 'Horario general de tarde');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `justificativos`
+--
+
+CREATE TABLE `justificativos` (
+  `jus_id` int(11) NOT NULL,
+  `asi_id` int(11) NOT NULL,
+  `archivo_url` varchar(255) NOT NULL,
+  `desde` date NOT NULL,
+  `hasta` date NOT NULL,
+  `motivo` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -201,7 +233,9 @@ CREATE TABLE `periodos_pago` (
 --
 
 INSERT INTO `periodos_pago` (`per_id`, `per_ini`, `per_fin`, `per_desc`, `per_nom`) VALUES
-(1, '2025-05-01', '2025-05-30', 'prueba 2', 'PERIODO DE MAYO');
+(1, '2025-05-01', '2025-05-30', 'prueba 2', 'PERIODO DE MAYO'),
+(2, '2025-01-01', '2025-01-31', 'PRUEBA', 'PERIODO PRUEBA1'),
+(3, '2025-05-01', '2025-05-31', '....', 'Periodo Abril');
 
 -- --------------------------------------------------------
 
@@ -247,7 +281,7 @@ CREATE TABLE `usuarios` (
 INSERT INTO `usuarios` (`usr_id`, `emp_id`, `usr_user`, `usr_pass`, `rol_id`, `usr_act`, `usr_fec`) VALUES
 (1, 57, 'A12345678', '$2a$12$1zOGlvCC8eO8R7fOWT5wcOAvoeAX4b1bnffxJEUaW.72wLA6abjaS', 1, 1, '2025-05-12 08:28:11'),
 (2, 56, 'O87654321', '$2a$12$1zOGlvCC8eO8R7fOWT5wcOAvoeAX4b1bnffxJEUaW.72wLA6abjaS', 3, 1, '2025-05-12 08:49:43'),
-(33, 33, 'asantander', '$2a$12$1zOGlvCC8eO8R7fOWT5wcOAvoeAX4b1bnffxJEUaW.72wLA6abjaS', 1, 1, '2025-01-15 10:00:00'),
+(33, 33, 'O77154321', '$2a$12$1zOGlvCC8eO8R7fOWT5wcOAvoeAX4b1bnffxJEUaW.72wLA6abjaS', 3, 1, '2025-05-19 21:28:43'),
 (34, 34, 'lcruz', '$2a$12$1zOGlvCC8eO8R7fOWT5wcOAvoeAX4b1bnffxJEUaW.72wLA6abjaS', 2, 1, '2025-03-22 10:00:00'),
 (35, 35, 'cquispe', '$2a$12$1zOGlvCC8eO8R7fOWT5wcOAvoeAX4b1bnffxJEUaW.72wLA6abjaS', 3, 1, '2025-01-20 10:00:00'),
 (36, 36, 'agomez', '$2a$12$1zOGlvCC8eO8R7fOWT5wcOAvoeAX4b1bnffxJEUaW.72wLA6abjaS', 3, 1, '2025-01-28 10:00:00'),
@@ -281,21 +315,14 @@ INSERT INTO `usuarios` (`usr_id`, `emp_id`, `usr_user`, `usr_pass`, `rol_id`, `u
 -- Indices de la tabla `asistencias`
 --
 ALTER TABLE `asistencias`
-  ADD PRIMARY KEY (`asis_id`);
+  ADD PRIMARY KEY (`asi_id`),
+  ADD KEY `emp_id` (`emp_id`);
 
 --
 -- Indices de la tabla `bonos`
 --
 ALTER TABLE `bonos`
   ADD PRIMARY KEY (`bono_id`);
-
---
--- Indices de la tabla `detalle_asistencias`
---
-ALTER TABLE `detalle_asistencias`
-  ADD PRIMARY KEY (`detasis_id`),
-  ADD KEY `asis_id` (`asis_id`),
-  ADD KEY `emp_id` (`emp_id`);
 
 --
 -- Indices de la tabla `detalle_pagos`
@@ -319,6 +346,19 @@ ALTER TABLE `empleados`
 --
 ALTER TABLE `especialidades`
   ADD PRIMARY KEY (`esp_id`);
+
+--
+-- Indices de la tabla `horarios`
+--
+ALTER TABLE `horarios`
+  ADD PRIMARY KEY (`hor_id`);
+
+--
+-- Indices de la tabla `justificativos`
+--
+ALTER TABLE `justificativos`
+  ADD PRIMARY KEY (`jus_id`),
+  ADD KEY `asi_id` (`asi_id`);
 
 --
 -- Indices de la tabla `pagos`
@@ -355,19 +395,13 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `asistencias`
 --
 ALTER TABLE `asistencias`
-  MODIFY `asis_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `asi_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT de la tabla `bonos`
 --
 ALTER TABLE `bonos`
-  MODIFY `bono_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT de la tabla `detalle_asistencias`
---
-ALTER TABLE `detalle_asistencias`
-  MODIFY `detasis_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `bono_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `detalle_pagos`
@@ -379,13 +413,25 @@ ALTER TABLE `detalle_pagos`
 -- AUTO_INCREMENT de la tabla `empleados`
 --
 ALTER TABLE `empleados`
-  MODIFY `emp_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
+  MODIFY `emp_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
 
 --
 -- AUTO_INCREMENT de la tabla `especialidades`
 --
 ALTER TABLE `especialidades`
   MODIFY `esp_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT de la tabla `horarios`
+--
+ALTER TABLE `horarios`
+  MODIFY `hor_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de la tabla `justificativos`
+--
+ALTER TABLE `justificativos`
+  MODIFY `jus_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `pagos`
@@ -397,7 +443,7 @@ ALTER TABLE `pagos`
 -- AUTO_INCREMENT de la tabla `periodos_pago`
 --
 ALTER TABLE `periodos_pago`
-  MODIFY `per_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `per_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `roles`
@@ -416,11 +462,10 @@ ALTER TABLE `usuarios`
 --
 
 --
--- Filtros para la tabla `detalle_asistencias`
+-- Filtros para la tabla `asistencias`
 --
-ALTER TABLE `detalle_asistencias`
-  ADD CONSTRAINT `detalle_asistencias_ibfk_1` FOREIGN KEY (`asis_id`) REFERENCES `asistencias` (`asis_id`),
-  ADD CONSTRAINT `detalle_asistencias_ibfk_2` FOREIGN KEY (`emp_id`) REFERENCES `empleados` (`emp_id`);
+ALTER TABLE `asistencias`
+  ADD CONSTRAINT `asistencias_ibfk_1` FOREIGN KEY (`emp_id`) REFERENCES `empleados` (`emp_id`);
 
 --
 -- Filtros para la tabla `detalle_pagos`
@@ -436,6 +481,12 @@ ALTER TABLE `detalle_pagos`
 --
 ALTER TABLE `empleados`
   ADD CONSTRAINT `empleados_ibfk_1` FOREIGN KEY (`esp_id`) REFERENCES `especialidades` (`esp_id`);
+
+--
+-- Filtros para la tabla `justificativos`
+--
+ALTER TABLE `justificativos`
+  ADD CONSTRAINT `justificativos_ibfk_1` FOREIGN KEY (`asi_id`) REFERENCES `asistencias` (`asi_id`);
 
 --
 -- Filtros para la tabla `usuarios`

@@ -10,8 +10,12 @@ public class LogoutServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        session.invalidate();  // Invalidar la sesión
-        response.sendRedirect("login.jsp");  // Redirigir al login
+        HttpSession session = request.getSession(false); // No crea sesión nueva si no existe
+
+        if (session != null) {
+            session.invalidate(); // Cierra sesión si existe
+        }
+
+        response.sendRedirect("login"); // Redirige al login (servlet /login)
     }
 }
