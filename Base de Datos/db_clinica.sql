@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 09-06-2025 a las 16:33:02
+-- Tiempo de generación: 09-06-2025 a las 20:29:49
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -975,6 +975,15 @@ CREATE TABLE `detalle_pagos` (
   `sueldo_neto` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `detalle_pagos`
+--
+
+INSERT INTO `detalle_pagos` (`detp_id`, `emp_id`, `pag_id`, `per_id`, `bono_id`, `detp_mon`, `descuento_total`, `sueldo_neto`) VALUES
+(2, 38, 1, 3, 1, 3500.00, 0.00, 3554.00),
+(3, 55, 1, 3, 3, 3500.00, 0.00, 3600.00),
+(4, 34, 1, 3, 4, 3080.00, 0.00, 3180.00);
+
 -- --------------------------------------------------------
 
 --
@@ -998,39 +1007,39 @@ CREATE TABLE `empleados` (
 --
 
 INSERT INTO `empleados` (`emp_id`, `emp_dni`, `emp_nom`, `emp_ape`, `emp_email`, `emp_tel`, `esp_id`, `emp_fec`, `emp_sal`) VALUES
-(33, '76432189', 'Axel Jesus', 'Santander Alcarraz', 'axelsantander@gmail.com', '912345678', 1, '2025-01-15', 5000.00),
-(34, '75643829', 'Lucía Marisol', 'Cruz Villanueva', 'luciacruz@gmail.com', '913456789', 1, '2025-01-22', 2800.00),
-(35, '73214567', 'Carlos Javier', 'Quispe Salazar', 'carlosquispe@gmail.com', '914567890', 1, '2025-01-25', 3500.00),
-(36, '74321890', 'Andrea Paola', 'Gómez Huamán', 'andreagomez@gmail.com', '915678901', 2, '2025-01-28', 3500.00),
-(37, '75478901', 'Luis Enrique', 'Paredes Soto', 'luisparedes@gmail.com', '916789012', 3, '2025-02-01', 3500.00),
-(38, '76589012', 'Sandra Milagros', 'Ramírez León', 'sandraramirez@gmail.com', '917890123', 4, '2025-02-05', 3500.00),
-(39, '77690123', 'Jorge Alberto', 'Rojas Aguilar', 'jorgerojas@gmail.com', '918901234', 5, '2025-02-08', 3500.00),
-(40, '78701234', 'Mónica Fiorella', 'Cáceres Meza', 'monicacaceres@gmail.com', '919012345', 4, '2025-02-11', 3500.00),
-(41, '79812345', 'Ricardo Daniel', 'Salinas Ruiz', 'ricardosalinas@gmail.com', '920123456', 1, '2025-02-15', 3500.00),
-(42, '70923456', 'Valeria Roxana', 'Espinoza Poma', 'valeriaespinoza@gmail.com', '921234567', 2, '2025-02-20', 3500.00),
-(43, '71034567', 'Fernando Iván', 'Reyes Guevara', 'fernandoreyes@gmail.com', '922345678', 3, '2025-02-25', 3500.00),
-(44, '72145678', 'Lucero Carolina', 'Lozano Córdova', 'lucerolozano@gmail.com', '923456789', 4, '2025-03-01', 3500.00),
-(45, '73256789', 'Héctor Raúl', 'Mendoza Castillo', 'hectormendoza@gmail.com', '924567890', 5, '2025-03-05', 3500.00),
-(46, '74367890', 'Gisela Pilar', 'Rivas Tello', 'giselarivas@gmail.com', '925678901', 6, '2025-03-10', 3500.00),
-(47, '75478912', 'David Andrés', 'Zevallos Linares', 'davidzevallos@gmail.com', '926789012', 1, '2025-03-15', 3500.00),
-(48, '76589023', 'Alejandra Ruth', 'Valdivia Quinteros', 'alejandravald@gmail.com', '927890123', 2, '2025-03-20', 3500.00),
-(49, '77690134', 'Renato César', 'Morales Yupanqui', 'renatomorales@gmail.com', '928901234', 3, '2025-03-25', 3500.00),
-(50, '78701245', 'Diana Fátima', 'Mamani Vargas', 'dianamam@gmail.com', '929012345', 4, '2025-03-30', 3500.00),
-(51, '79812356', 'Edwin Joel', 'Ortega Zárate', 'edwinortega@gmail.com', '930123456', 5, '2025-04-01', 3500.00),
-(52, '70923467', 'María Fernanda', 'Pino Galván', 'mariapino@gmail.com', '931234567', 6, '2025-04-05', 3500.00),
-(53, '71034578', 'Óscar Leonel', 'Bravo Ticona', 'oscarbravo@gmail.com', '932345678', 1, '2025-04-10', 3500.00),
-(54, '72145689', 'Anahí Julissa', 'Gonzales Llosa', 'anahigonzales@gmail.com', '933456789', 2, '2025-04-15', 3500.00),
-(55, '73256790', 'Bryan Ariel', 'Zambrano Olivares', 'bryanzambrano@gmail.com', '934567890', 3, '2025-04-20', 3500.00),
-(56, '74367801', 'Mariela Edith', 'Núñez Rengifo', 'marielanunez@gmail.com', '935678901', 4, '2025-04-25', 3500.00),
-(57, '75478923', 'Franco Elías', 'Chávez Delgado', 'francochavez@gmail.com', '936789012', NULL, '2025-04-28', 3500.00),
-(58, '76589034', 'Zulema Estefany', 'Mejía Carbajal', 'zulemamejia@gmail.com', '937890123', 6, '2025-04-30', 3500.00),
-(59, '77690145', 'Kevin Alexander', 'Torres Ayala', 'kevintorres@gmail.com', '938901234', 1, '2025-05-01', 3500.00),
-(60, '78701256', 'Natalie Ivonne', 'Benavente Quiroz', 'nataliebenavente@gmail.com', '939012345', 2, '2025-05-05', 3500.00),
-(61, '79812367', 'Samuel Esteban', 'Huerta Vigo', 'samuelhuerta@gmail.com', '940123456', 3, '2025-05-08', 3500.00),
-(62, '70923478', 'Pamela Alejandra', 'Quintana Rosas', 'pamelaquintana@gmail.com', '941234567', 4, '2025-05-10', 3500.00),
-(63, '71034589', 'Yair Rodrigo', 'Silva Castañeda', 'yairsilva@gmail.com', '942345678', 5, '2025-05-12', 3500.00),
-(64, '72145690', 'Fiorella Celeste', 'Delgado Ñahui', 'fiorelladelgado@gmail.com', '943456789', 6, '2025-05-15', 3500.00),
-(67, '7234234', 'juan david', 'peres fernadez', 'juan@gmail.com', '923424234', 1, '2025-05-07', 111.00);
+(33, '76432189', 'Axel Jesus', 'Santander Alcarraz', 'axelsantander@gmail.com', '912345678', 1, '2025-01-15', 3080.00),
+(34, '75643829', 'Lucía Marisol', 'Cruz Villanueva', 'luciacruz@gmail.com', '913456789', 1, '2025-01-22', 3080.00),
+(35, '73214567', 'Carlos Javier', 'Quispe Salazar', 'carlosquispe@gmail.com', '914567890', 1, '2025-01-25', 3080.00),
+(36, '74321890', 'Andrea Paola', 'Gómez Huamán', 'andreagomez@gmail.com', '915678901', 2, '2025-01-28', 3520.00),
+(37, '75478901', 'Luis Enrique', 'Paredes Soto', 'luisparedes@gmail.com', '916789012', 3, '2025-02-01', 3960.00),
+(38, '76589012', 'Sandra Milagros', 'Ramírez León', 'sandraramirez@gmail.com', '917890123', 4, '2025-02-05', 3300.00),
+(39, '77690123', 'Jorge Alberto', 'Rojas Aguilar', 'jorgerojas@gmail.com', '918901234', 5, '2025-02-08', 4400.00),
+(40, '78701234', 'Mónica Fiorella', 'Cáceres Meza', 'monicacaceres@gmail.com', '919012345', 4, '2025-02-11', 3300.00),
+(41, '79812345', 'Ricardo Daniel', 'Salinas Ruiz', 'ricardosalinas@gmail.com', '920123456', 1, '2025-02-15', 3080.00),
+(42, '70923456', 'Valeria Roxana', 'Espinoza Poma', 'valeriaespinoza@gmail.com', '921234567', 2, '2025-02-20', 3520.00),
+(43, '71034567', 'Fernando Iván', 'Reyes Guevara', 'fernandoreyes@gmail.com', '922345678', 3, '2025-02-25', 3960.00),
+(44, '72145678', 'Lucero Carolina', 'Lozano Córdova', 'lucerolozano@gmail.com', '923456789', 4, '2025-03-01', 3300.00),
+(45, '73256789', 'Héctor Raúl', 'Mendoza Castillo', 'hectormendoza@gmail.com', '924567890', 5, '2025-03-05', 4400.00),
+(46, '74367890', 'Gisela Pilar', 'Rivas Tello', 'giselarivas@gmail.com', '925678901', 6, '2025-03-10', 4950.00),
+(47, '75478912', 'David Andrés', 'Zevallos Linares', 'davidzevallos@gmail.com', '926789012', 1, '2025-03-15', 3080.00),
+(48, '76589023', 'Alejandra Ruth', 'Valdivia Quinteros', 'alejandravald@gmail.com', '927890123', 2, '2025-03-20', 3520.00),
+(49, '77690134', 'Renato César', 'Morales Yupanqui', 'renatomorales@gmail.com', '928901234', 3, '2025-03-25', 3960.00),
+(50, '78701245', 'Diana Fátima', 'Mamani Vargas', 'dianamam@gmail.com', '929012345', 4, '2025-03-30', 3300.00),
+(51, '79812356', 'Edwin Joel', 'Ortega Zárate', 'edwinortega@gmail.com', '930123456', 5, '2025-04-01', 4400.00),
+(52, '70923467', 'María Fernanda', 'Pino Galván', 'mariapino@gmail.com', '931234567', 6, '2025-04-05', 4950.00),
+(53, '71034578', 'Óscar Leonel', 'Bravo Ticona', 'oscarbravo@gmail.com', '932345678', 1, '2025-04-10', 3080.00),
+(54, '72145689', 'Anahí Julissa', 'Gonzales Llosa', 'anahigonzales@gmail.com', '933456789', 2, '2025-04-15', 3520.00),
+(55, '73256790', 'Bryan Ariel', 'Zambrano Olivares', 'bryanzambrano@gmail.com', '934567890', 3, '2025-04-20', 3960.00),
+(56, '74367801', 'Mariela Edith', 'Núñez Rengifo', 'marielanunez@gmail.com', '935678901', 4, '2025-04-25', 3300.00),
+(57, '75478923', 'Franco Elías', 'Chávez Delgado', 'francochavez@gmail.com', '936789012', NULL, '2025-04-28', 6000.00),
+(58, '76589034', 'Zulema Estefany', 'Mejía Carbajal', 'zulemamejia@gmail.com', '937890123', 6, '2025-04-30', 4950.00),
+(59, '77690145', 'Kevin Alexander', 'Torres Ayala', 'kevintorres@gmail.com', '938901234', 1, '2025-05-01', 3080.00),
+(60, '78701256', 'Natalie Ivonne', 'Benavente Quiroz', 'nataliebenavente@gmail.com', '939012345', 2, '2025-05-05', 3520.00),
+(61, '79812367', 'Samuel Esteban', 'Huerta Vigo', 'samuelhuerta@gmail.com', '940123456', 3, '2025-05-08', 3960.00),
+(62, '70923478', 'Pamela Alejandra', 'Quintana Rosas', 'pamelaquintana@gmail.com', '941234567', 4, '2025-05-10', 3300.00),
+(63, '71034589', 'Yair Rodrigo', 'Silva Castañeda', 'yairsilva@gmail.com', '942345678', 5, '2025-05-12', 4400.00),
+(64, '72145690', 'Fiorella Celeste', 'Delgado Ñahui', 'fiorelladelgado@gmail.com', '943456789', 6, '2025-05-15', 4950.00),
+(67, '7234234', 'juan david', 'peres fernadez', 'juan@gmail.com', '923424234', 1, '2025-05-07', 3080.00);
 
 -- --------------------------------------------------------
 
@@ -1104,6 +1113,13 @@ CREATE TABLE `pagos` (
   `pag_tot` decimal(10,2) NOT NULL,
   `pag_det` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `pagos`
+--
+
+INSERT INTO `pagos` (`pag_id`, `pag_fec`, `pag_tot`, `pag_det`) VALUES
+(1, '2025-06-30', 128540.00, 'Pago correspondiente al mes de junio a los odontólogos');
 
 -- --------------------------------------------------------
 
@@ -1298,7 +1314,7 @@ ALTER TABLE `bonos`
 -- AUTO_INCREMENT de la tabla `detalle_pagos`
 --
 ALTER TABLE `detalle_pagos`
-  MODIFY `detp_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `detp_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `empleados`
@@ -1328,7 +1344,7 @@ ALTER TABLE `justificativos`
 -- AUTO_INCREMENT de la tabla `pagos`
 --
 ALTER TABLE `pagos`
-  MODIFY `pag_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `pag_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `periodos_pago`
