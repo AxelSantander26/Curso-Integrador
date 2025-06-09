@@ -120,7 +120,7 @@
             <i class="bi bi-cash-coin fs-4"></i>
             <small>Bonos</small>
         </a>
-        <a href="<c:url value='/pagos.jsp' />" class="d-flex flex-column align-items-center text-white text-decoration-none mb-3">
+        <a href="<c:url value='/pagos' />" class="d-flex flex-column align-items-center text-white text-decoration-none mb-3">
             <i class="bi bi-file-earmark-spreadsheet fs-4"></i>
             <small>Planillas</small>
         </a>
@@ -130,7 +130,6 @@
         </a>
     </div>
 </div>
-
 <!-- Modal Sidebar Expandido -->
 <div class="sidebar-modal text-white" id="sidebarModal">
     <div class="p-3">
@@ -139,30 +138,25 @@
             <span class="fw-bold">REGRESAR</span>
         </button>
         <a href="<c:url value='/dashboard' />" class="d-flex align-items-center text-white text-decoration-none py-2 px-3 mb-2">
-            <i class="bi bi-speedometer2 fs-4 me-3"></i> Inicio (vista general)
+            <i class="bi bi-speedometer2 fs-4 me-3"></i> Inicio
         </a>
         <a href="<c:url value='/empleados' />" class="d-flex align-items-center text-white text-decoration-none py-2 px-3 mb-2">
-            <i class="bi bi-person-vcard fs-4 me-3"></i> Personal (gestión de empleados)
+            <i class="bi bi-person-vcard fs-4 me-3"></i> Personal
         </a>
         <a href="<c:url value='/asistencias' />" class="d-flex align-items-center text-white text-decoration-none py-2 px-3 mb-2">
-            <i class="bi bi-clipboard2-pulse fs-4 me-3"></i> Asistencias (registro diario)
+            <i class="bi bi-clipboard2-pulse fs-4 me-3"></i> Asistencias
         </a>
         <a href="<c:url value='/bonos' />" class="d-flex align-items-center text-white text-decoration-none py-2 px-3 mb-2">
-            <i class="bi bi-cash-coin fs-4 me-3"></i> Bonos (asignación adicional)
+            <i class="bi bi-cash-coin fs-4 me-3"></i> Bonos
         </a>
         <a href="<c:url value='/pagos' />" class="d-flex align-items-center text-white text-decoration-none py-2 px-3 mb-2">
-            <i class="bi bi-credit-card fs-4 me-3"></i> Pagos a Empleados (cálculo en tiempo real)
+            <i class="bi bi-file-earmark-spreadsheet fs-4 me-3"></i> Planillas
         </a>
         <a href="<c:url value='/periodos' />" class="d-flex align-items-center text-white text-decoration-none py-2 px-3 mb-2">
-            <i class="bi bi-calendar-check fs-4 me-3"></i> Periodos de Pago (gestión mensual)
-        </a>
-        <a href="<c:url value='/planillas' />" class="d-flex align-items-center text-white text-decoration-none py-2 px-3 mb-2">
-            <i class="bi bi-file-earmark-spreadsheet fs-4 me-3"></i> Planillas (resumen final del mes)
+            <i class="bi bi-calendar-check fs-4 me-3"></i> Periodos
         </a>
     </div>
 </div>
-
-
 
 <!-- Overlay -->
 <div class="overlay" id="overlay"></div>

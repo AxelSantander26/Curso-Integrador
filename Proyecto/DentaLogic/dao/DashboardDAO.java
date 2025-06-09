@@ -8,7 +8,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class DashboardDAO {
-
     private Connection conexion;
 
     public DashboardDAO() {
@@ -35,7 +34,7 @@ public class DashboardDAO {
 
             // Asistencias de hoy (por fecha actual)
             PreparedStatement ps3 = conexion.prepareStatement(
-                    "SELECT COUNT(*) FROM asistencias WHERE fecha = CURDATE()"
+                "SELECT COUNT(*) FROM detalle_asistencias WHERE asis_id IN (SELECT asis_id FROM asistencias WHERE asis_fec = CURDATE())"
             );
             ResultSet rs3 = ps3.executeQuery();
             if (rs3.next()) {
@@ -44,7 +43,7 @@ public class DashboardDAO {
 
             // Total a pagar (ficticio o por ahora suma netos)
             PreparedStatement ps4 = conexion.prepareStatement(
-                    "SELECT SUM(sueldo_neto) FROM detalle_pagos"
+                "SELECT SUM(sueldo_neto) FROM detalle_pagos"
             );
             ResultSet rs4 = ps4.executeQuery();
             if (rs4.next()) {

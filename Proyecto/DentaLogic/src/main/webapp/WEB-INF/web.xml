@@ -1,4 +1,11 @@
-<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_4_0.xsd" version="4.0">
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+         http://java.sun.com/xml/ns/javaee/web-app_4_0.xsd" 
+         version="4.0">
+    
+    <!-- Configuración del servlet por defecto para archivos estáticos -->
     <servlet>
         <servlet-name>default</servlet-name>
         <servlet-class>org.apache.catalina.servlets.DefaultServlet</servlet-class>
@@ -8,5 +15,32 @@
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>/assets/*</url-pattern>
+    </servlet-mapping>
+    
+    <!-- Configuración del servlet para justificativos -->
+    <servlet>
+        <servlet-name>JustificativoServlet</servlet-name>
+        <servlet-class>grupo7.dentalogic.servlets.JustificativoServlet</servlet-class>
+        <multipart-config>
+            <max-file-size>5242880</max-file-size> <!-- 5MB -->
+            <max-request-size>10485760</max-request-size> <!-- 10MB -->
+            <file-size-threshold>1048576</file-size-threshold> <!-- 1MB -->
+        </multipart-config>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>JustificativoServlet</servlet-name>
+        <url-pattern>/asistencias/justificativos</url-pattern>
+    </servlet-mapping>
+    
+    <!-- Configuración para servir archivos subidos -->
+    <servlet>
+        <servlet-name>FileServlet</servlet-name>
+        <servlet-class>grupo7.dentalogic.servlets.FileServlet</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>FileServlet</servlet-name>
+        <url-pattern>/uploads/*</url-pattern>
     </servlet-mapping>
 </web-app>

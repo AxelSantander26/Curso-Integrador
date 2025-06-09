@@ -9,7 +9,7 @@
     <script src="assets/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" />
     <style>
-        /* Estilos generales */
+        /* Tus estilos actuales */
         .calendar-container {
             overflow-x: auto;
             margin-top: 20px;
@@ -128,54 +128,22 @@
 <main class="main-content">
     <div class="content-wrapper">
         <%
-            String paramYear = request.getParameter("year");
-            String paramMonth = request.getParameter("month");
-
-            Calendar cal = Calendar.getInstance();
-            int year, month;
-
-            if (paramYear != null && paramMonth != null) {
-                try {
-                    year = Integer.parseInt(paramYear);
-                    month = Integer.parseInt(paramMonth);
-                    cal.set(year, month, 1);
-                } catch (Exception e) {
-                    year = cal.get(Calendar.YEAR);
-                    month = cal.get(Calendar.MONTH);
-                }
-            } else {
-                year = cal.get(Calendar.YEAR);
-                month = cal.get(Calendar.MONTH);
-            }
-
-            cal.set(year, month, 1);
-            int diasEnMes = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
-            int hoyDia = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
-            int hoyMes = Calendar.getInstance().get(Calendar.MONTH);
-            int hoyYear = Calendar.getInstance().get(Calendar.YEAR);
+            int year = (int) request.getAttribute("year");
+            int month = (int) request.getAttribute("month");
+            int diasEnMes = (int) request.getAttribute("diasEnMes");
+            
+            Calendar hoyCal = Calendar.getInstance();
+            int hoyDia = hoyCal.get(Calendar.DAY_OF_MONTH);
+            int hoyMes = hoyCal.get(Calendar.MONTH);
+            int hoyYear = hoyCal.get(Calendar.YEAR);
 
             List<AsistenciaInfo> empleados = (List<AsistenciaInfo>) request.getAttribute("empleados");
-            List<AsistenciaInfo> asistencias = (List<AsistenciaInfo>) request.getAttribute("asistencias");
-
-            Map<Integer, Map<Integer, AsistenciaInfo>> asistenciasPorEmpleado = new HashMap<>();
-            for (AsistenciaInfo asi : asistencias) {
-                Calendar tempCal = Calendar.getInstance();
-                tempCal.setTime(asi.getFecha());
-                int asiYear = tempCal.get(Calendar.YEAR);
-                int asiMonth = tempCal.get(Calendar.MONTH);
-                int asiDay = tempCal.get(Calendar.DAY_OF_MONTH);
-
-                if (asiYear == year && asiMonth == month) {
-                    int empId = asi.getEmpId();
-                    if (!asistenciasPorEmpleado.containsKey(empId)) {
-                        asistenciasPorEmpleado.put(empId, new HashMap<Integer, AsistenciaInfo>());
-                    }
-                    asistenciasPorEmpleado.get(empId).put(asiDay, asi);
-                }
-            }
+            Map<Integer, Map<Integer, AsistenciaInfo>> asistenciasPorEmpleado = 
+                (Map<Integer, Map<Integer, AsistenciaInfo>>) request.getAttribute("asistenciasPorEmpleado");
 
             String[] nombresDias = {"Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"};
-            String[] nombresMeses = {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"};
+            String[] nombresMeses = {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", 
+                                   "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"};
         %>
 
         <div class="calendar-header">
@@ -202,8 +170,8 @@
 
                 <button type="button" class="btn btn-secondary btn-sm" id="btnHoy">Hoy</button>
             </form>
-
-            </div>
+        </div>
+        
         <input type="text" id="filtroNombre" placeholder="Buscar por nombre o apellido" class="form-control form-control-sm" style="max-width: 250px;" />
         
         <div class="calendar-container">
@@ -212,13 +180,16 @@
                     <tr>
                         <th class="employee-id-header">ID</th>
                         <th class="employee-name-header">Empleado</th>
-                        <% for (int d = 1; d <= diasEnMes; d++) {
-                            cal.set(year, month, d);
-                            int diaSemana = cal.get(Calendar.DAY_OF_WEEK);
-                            boolean esHoy = (d == hoyDia && month == hoyMes && year == hoyYear);
-                            String clase = "day-header";
-                            if (diaSemana == Calendar.SATURDAY || diaSemana == Calendar.SUNDAY) clase += " weekend";
-                            if (esHoy) clase += " today";
+                        <% 
+                            Calendar cal = Calendar.getInstance();
+                            cal.set(year, month, 1);
+                            for (int d = 1; d <= diasEnMes; d++) {
+                                cal.set(Calendar.DAY_OF_MONTH, d);
+                                int diaSemana = cal.get(Calendar.DAY_OF_WEEK);
+                                boolean esHoy = (d == hoyDia && month == hoyMes && year == hoyYear);
+                                String clase = "day-header";
+                                if (diaSemana == Calendar.SATURDAY || diaSemana == Calendar.SUNDAY) clase += " weekend";
+                                if (esHoy) clase += " today";
                         %>
                         <th class="<%= clase %>">
                             <div class="day-number"><%= d %></div>
@@ -228,39 +199,63 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <% if (empleados != null) {
+                    <% if (empleados != null && !empleados.isEmpty()) {
                         for (AsistenciaInfo emp : empleados) {
                             int empId = emp.getEmpId();
-                            String nombreCompleto = emp.getNombre() + " " + emp.getApellido();
+                            String nombreCompleto = emp.getNombreCompleto();
                             Map<Integer, AsistenciaInfo> asistenciasEmp = asistenciasPorEmpleado.get(empId);
                     %>
                     <tr>
                         <td class="employee-id"><%= empId %></td>
                         <td class="employee-name"><%= nombreCompleto %></td>
-                        <% for (int d = 1; d <= diasEnMes; d++) {
-                            cal.set(year, month, d);
-                            int diaSemana = cal.get(Calendar.DAY_OF_WEEK);
-                            boolean esHoy = (d == hoyDia && month == hoyMes && year == hoyYear);
-                            String clase = "";
-                            if (diaSemana == Calendar.SATURDAY || diaSemana == Calendar.SUNDAY) clase += "weekend ";
-                            if (esHoy) clase += "today";
+                        <% 
+                            for (int d = 1; d <= diasEnMes; d++) {
+                                cal.set(Calendar.DAY_OF_MONTH, d);
+                                int diaSemana = cal.get(Calendar.DAY_OF_WEEK);
+                                boolean esHoy = (d == hoyDia && month == hoyMes && year == hoyYear);
+                                String clase = "";
+                                if (diaSemana == Calendar.SATURDAY || diaSemana == Calendar.SUNDAY) clase += "weekend ";
+                                if (esHoy) clase += "today";
 
-                            String contenido = "-";
-                            String estadoClass = "";
-                            if (asistenciasEmp != null && asistenciasEmp.containsKey(d)) {
-                                AsistenciaInfo asi = asistenciasEmp.get(d);
-                                contenido = asi.getEstado();
-                                if (asi.getEstado() != null) {
-                                    switch (asi.getEstado().toLowerCase()) {
-                                        case "presente": estadoClass = "attendance-present"; break;
-                                        case "ausente": estadoClass = "attendance-absent"; break;
-                                        case "tarde": estadoClass = "attendance-late"; break;
+                                String contenido = "-";
+                                String estadoClass = "";
+                                String tooltip = "";
+                                
+                                if (asistenciasEmp != null && asistenciasEmp.containsKey(d)) {
+                                    AsistenciaInfo asi = asistenciasEmp.get(d);
+                                    contenido = asi.getEstado();
+                                    
+                                    // Establecer clases según el estado
+                                    if (asi.getEstado() != null) {
+                                        switch (asi.getEstado()) {
+                                            case "PUNTUAL": 
+                                                estadoClass = "attendance-present";
+                                                contenido = "PUNTUAL";
+                                                break;
+                                            case "TARDANZA": 
+                                                estadoClass = "attendance-late";
+                                                contenido = "TARDANZA";
+                                                break;
+                                            case "FALTA": 
+                                                estadoClass = "attendance-absent";
+                                                contenido = "FALTA";
+                                                break;
+                                        }
+                                    }
+                                    
+                                    // Si está justificado
+                                    if (asi.isJustificado()) {
+                                        estadoClass += " attendance-justified";
+                                        tooltip = "Justificado: " + asi.getObservaciones();
+                                    } else if (asi.getObservaciones() != null && !asi.getObservaciones().isEmpty()) {
+                                        tooltip = asi.getObservaciones();
+                                    }
+                                    
+                                    // Agregar tooltip si hay información adicional
+                                    if (!tooltip.isEmpty()) {
+                                        contenido = "<span title='" + tooltip + "'>" + contenido + "</span>";
                                     }
                                 }
-                                if (asi.isJustificado()) {
-                                    estadoClass += " attendance-justified";
-                                }
-                            }
                         %>
                         <td class="<%= clase %>"><span class="<%= estadoClass %>"><%= contenido %></span></td>
                         <% } %>

@@ -14,8 +14,7 @@ public class AsistenciaInfo {
     private boolean justificado;
     private String observaciones;
 
-    public AsistenciaInfo() {}
-
+    // Getters y Setters
     public int getEmpId() {
         return empId;
     }
@@ -88,7 +87,6 @@ public class AsistenciaInfo {
         this.observaciones = observaciones;
     }
 
-    // Método útil para mostrar nombre completo si lo necesitas
     public String getNombreCompleto() {
         return nombre + " " + apellido;
     }
