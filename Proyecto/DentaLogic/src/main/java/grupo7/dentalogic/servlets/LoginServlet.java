@@ -3,51 +3,44 @@ package grupo7.dentalogic.servlets;
 import grupo7.dentalogic.dao.UsuarioDAO;
 import grupo7.dentalogic.model.Usuario;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.*;
+
 import java.io.IOException;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.*;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Cuando alguien va a /login, mostrar la vista login.jsp
-        request.getRequestDispatcher("login.jsp").forward(request, response);
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        // Redirige a la pÃ¡gina de login si se accede por GET
+        response.sendRedirect("login.jsp");
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
         String usuario = request.getParameter("usuario");
-        String password = request.getParameter("password");
+        String clave = request.getParameter("clave");
 
-        Usuario usuarioValidado = UsuarioDAO.validarUsuario(usuario, password);
+        UsuarioDAO dao = new UsuarioDAO();
+        Usuario user = dao.login(usuario, clave);
 
-        if (usuarioValidado != null) {
-            // Almacenar el usuario en la sesión
+        if (user != null) {
             HttpSession session = request.getSession();
-            session.setAttribute("usuario", usuarioValidado);
+            session.setAttribute("usuarioLogueado", user);
 
-            // Almacenar el idEmpleado en la sesión
-            session.setAttribute("empId", usuarioValidado.getIdEmpleado());  // Guardamos el idEmpleado
-
-            int rolId = usuarioValidado.getIdRol();
-            String username = usuarioValidado.getUsuario();
-
-            if (rolId == 1 && username.matches("^A\\d{8}$")) {
-                // Redirigir al dashboard de administrador
+            if ("ADMIN".equalsIgnoreCase(user.getRol())) {
                 response.sendRedirect("dashboardAdmin");
-            } else if (rolId == 3 && username.matches("^O\\d{8}$")) {
-                // Redirigir al dashboard del odontólogo
-                response.sendRedirect("dashboardOdon");
             } else {
-                request.setAttribute("error", "Usuario no autorizado o formato de usuario incorrecto.");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
+                response.sendRedirect("marcacion");
             }
 
         } else {
-            request.setAttribute("error", "Usuario o contraseña incorrectos.");
+            request.setAttribute("error", "Usuario o clave incorrectos");
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }
     }

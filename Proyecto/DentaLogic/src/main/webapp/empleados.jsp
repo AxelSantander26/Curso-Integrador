@@ -1,212 +1,270 @@
-<%@ page import="java.util.*, grupo7.dentalogic.model.Empleado" %>
-<%@ page contentType="text/html;charset=windows-1252" language="java" %>
-<!DOCTYPE html>
-<html lang="es">
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
-        <title>Gestión de Empleados</title>
-        <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-        <script src="assets/js/bootstrap.bundle.min.js"></script>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
-        <style>
-            .sticky-header thead th {
-                position: sticky;
-                top: 0;
-                background: #f8f9fa;
-                z-index: 1;
-            }
-        </style>
-    </head>
-    <body>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%
+    grupo7.dentalogic.model.Usuario usuario = (grupo7.dentalogic.model.Usuario) session.getAttribute("usuarioLogueado");
+    if (usuario == null) {
+        response.sendRedirect("login");
+        return;
+    }
+%>
+<link rel="stylesheet" href="assets/css/bootstrap.min.css">
+<script src="assets/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+--primary-color:#4361ee;
+--primary-hover:#3a56d4;
+--secondary-color:#3f37c9;
+--dark-color:#1f2937;
+--light-color:#f9fafb;
+--success-color:#10b981;
+--warning-color:#f59e0b;
+--danger-color:#ef4444;
+}
+body {
+font-family:'Inter',sans-serif;
+}
+h3 {
+font-weight:600;
+}
+.card {
+border:none;
+border-radius:10px;
+box-shadow:0 4px 6px rgba(0,0,0,0.05);
+transition:transform 0.2s,box-shadow 0.2s;
+}
+.card:hover {
+transform:translateY(-2px);
+box-shadow:0 10px 15px rgba(0,0,0,0.1);
+}
+.card-header {
+border-radius:10px 10px 0 0 !important;
+}
+.btn {
+border-radius:8px;
+padding:8px 16px;
+font-weight:500;
+transition:all 0.2s;
+}
+.btn-primary {
+background-color:var(--primary-color);
+border-color:var(--primary-color);
+}
+.btn-primary:hover {
+background-color:var(--primary-hover);
+border-color:var(--primary-hover);
+}
+.btn-sm {
+padding:5px 10px;
+border-radius:6px;
+}
+.table {
+--bs-table-bg:transparent;
+border-collapse:separate;
+border-spacing:0;
+}
+.table thead th {
+background-color:var(--light-color);
+border-bottom:2px solid #e5e7eb;
+position:sticky;
+top:0;
+}
+.table tbody tr {
+transition:background-color 0.2s;
+}
+.table tbody tr:hover {
+background-color:rgba(67,97,238,0.05);
+}
+.table td,.table th {
+padding:12px 15px;
+vertical-align:middle;
+}
+.form-control,.form-select {
+border-radius:8px;
+padding:10px 15px;
+border:1px solid #e5e7eb;
+transition:border-color 0.2s,box-shadow 0.2s;
+}
+.form-control:focus,.form-select:focus {
+border-color:var(--primary-color);
+box-shadow:0 0 0 3px rgba(67,97,238,0.2);
+}
+.form-label {
+font-weight:500;
+margin-bottom:8px;
+color:#4b5563;
+}
+#formAgregar, #formEditar {
+transition:all 0.3s ease;
+}
+</style>
 
-        <jsp:include page="components/sidebar-navbar.jsp"/>
+<jsp:include page="/components/routes/sidebar.jsp" />
+<div class="content-wrapper p-4">
+<div class="container-fluid">
 
-        <main class="main-content">
-            <div class="content-wrapper container py-4">
-                <%
-                    Empleado emp = (Empleado) request.getAttribute("empleadoEditar");
-                    boolean mostrarForm = emp != null || "add".equals(request.getParameter("action"));
+<!-- HEADER Y BOTÃ“N -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h3 class="mb-0"><i class="bi bi-person-vcard me-2"></i>GestiÃ³n de Empleados</h3>
+  <button class="btn btn-primary" onclick="mostrarFormularioAgregar()"><i class="bi bi-plus-circle me-1"></i>Agregar Empleado</button>
+</div>
 
-                    String[][] camposTexto = {
-                        {"DNI", "dni", emp != null ? emp.getEmpDni() : ""},
-                        {"Nombre", "nombre", emp != null ? emp.getEmpNom() : ""},
-                        {"Apellido", "apellido", emp != null ? emp.getEmpApe() : ""},
-                        {"Email", "email", emp != null ? emp.getEmpEmail() : ""},
-                        {"Teléfono", "tel", emp != null && emp.getEmpTel() != null ? emp.getEmpTel() : ""}
-                    };
+<!-- FORMULARIO AGREGAR -->
+<div class="card mb-4" id="formAgregar" style="display: none;">
+  <div class="card-header bg-primary text-white"><strong>Registrar Nuevo Empleado</strong></div>
+  <div class="card-body">
+    <form method="post" class="row g-3" id="agregarForm">
+      <div class="col-md-3">
+        <label class="form-label">DNI</label>
+        <input type="text" name="emp_dni" class="form-control" placeholder="DNI" required />
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Nombre</label>
+        <input type="text" name="emp_nombre" class="form-control" placeholder="Nombre" required />
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Apellido</label>
+        <input type="text" name="emp_apellido" class="form-control" placeholder="Apellido" required />
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Especialidad</label>
+        <select name="esp_id" class="form-select" required>
+          <option value="">-- Seleccione --</option>
+          <c:forEach var="esp" items="${especialidades}">
+            <option value="${esp[0]}">${esp[1]}</option>
+          </c:forEach>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Horario</label>
+        <select name="hor_id" class="form-select" required>
+          <option value="">-- Seleccione --</option>
+          <c:forEach var="hor" items="${horarios}">
+            <option value="${hor[0]}">${hor[1]}</option>
+          </c:forEach>
+        </select>
+      </div>
+      <div class="col-md-4 d-flex align-items-end gap-2">
+        <button type="submit" class="btn btn-success w-100"><i class="bi bi-person-plus me-1"></i>Guardar</button>
+        <button type="button" class="btn btn-secondary" onclick="cancelarForm()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
 
-                    String fechaIngreso = "";
-                    if (emp != null && emp.getEmpFec() != null) {
-                        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
-                        fechaIngreso = sdf.format(emp.getEmpFec());
-                    }
+<!-- FORMULARIO EDITAR -->
+<c:if test="${empleado != null}">
+  <div class="card mb-4" id="formEditar">
+    <div class="card-header bg-primary text-white"><strong>Editar Empleado</strong></div>
+    <div class="card-body">
+      <form method="post" class="row g-3" id="editarForm">
+        <input type="hidden" name="emp_id" value="${empleado.empId}" />
+        <div class="col-md-3">
+          <label class="form-label">DNI</label>
+          <input type="text" name="emp_dni" value="${empleado.empDni}" class="form-control" required />
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Nombre</label>
+          <input type="text" name="emp_nombre" value="${empleado.empNombre}" class="form-control" required />
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Apellido</label>
+          <input type="text" name="emp_apellido" value="${empleado.empApellido}" class="form-control" required />
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Especialidad</label>
+          <select name="esp_id" class="form-select" required>
+            <option value="">-- Seleccione --</option>
+            <c:forEach var="esp" items="${especialidades}">
+              <option value="${esp[0]}" ${empleado.espId == esp[0] ? 'selected' : ''}>${esp[1]}</option>
+            </c:forEach>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Horario</label>
+          <select name="hor_id" class="form-select" required>
+            <option value="">-- Seleccione --</option>
+            <c:forEach var="hor" items="${horarios}">
+              <option value="${hor[0]}" ${empleado.horId == hor[0] ? 'selected' : ''}>${hor[1]}</option>
+            </c:forEach>
+          </select>
+        </div>
+        <div class="col-md-4 d-flex align-items-end gap-2">
+          <button type="submit" class="btn btn-success w-100"><i class="bi bi-pencil-square me-1"></i>Actualizar</button>
+          <button type="button" class="btn btn-secondary" onclick="cancelarForm()">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</c:if>
 
-                    String salario = emp != null ? String.valueOf(emp.getEmpSal()) : "";
-                    String espId = emp != null ? String.valueOf(emp.getEspId()) : "";
-                %>
+<!-- TABLA -->
+<div class="card">
+  <div class="card-header bg-dark text-white"><strong><i class="bi bi-people-fill me-2"></i>Lista de Empleados</strong></div>
+  <div class="card-body table-responsive">
+    <table class="table table-bordered table-hover align-middle">
+      <thead class="table-light">
+        <tr>
+          <th>ID</th>
+          <th>DNI</th>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>Especialidad</th>
+          <th>Horario</th>
+          <th class="text-center">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <c:forEach var="emp" items="${empleados}">
+          <tr>
+            <td>${emp.empId}</td>
+            <td>${emp.empDni}</td>
+            <td>${emp.empNombre}</td>
+            <td>${emp.empApellido}</td>
+            <td>${emp.especialidad}</td>
+            <td>${emp.horario}</td>
+            <td class="text-center">
+              <div class="d-flex justify-content-center gap-2">
+                <form method="get">
+                  <input type="hidden" name="edit_id" value="${emp.empId}" />
+                  <button type="submit" class="btn btn-warning btn-sm"><i class="bi bi-pencil-fill"></i></button>
+                </form>
+                <form method="post" onsubmit="return confirm('Â¿Eliminar empleado?')">
+                  <input type="hidden" name="emp_id" value="${emp.empId}" />
+                  <input type="hidden" name="_method" value="DELETE" />
+                  <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash-fill"></i></button>
+                </form>
+              </div>
+            </td>
+          </tr>
+        </c:forEach>
+        <c:if test="${empty empleados}">
+          <tr>
+            <td colspan="7" class="text-center text-muted">No hay empleados registrados.</td>
+          </tr>
+        </c:if>
+      </tbody>
+    </table>
+  </div>
+</div>
 
-                <!-- Formulario -->
-                <div id="form-empleado" class="card p-4 mb-4 <%= mostrarForm ? "" : "d-none"%>">
-                    <h5 class="mb-3"><%= emp != null ? "Editar Empleado" : "Nuevo Empleado"%></h5>
-                    <form class="row gy-3" method="post" action="empleados">
-                        <% if (emp != null) {%>
-                        <input type="hidden" name="empId" value="<%= emp.getEmpId()%>"/>
-                        <% } %>
+</div>
+</div>
 
-                        <% for (int i = 0; i < camposTexto.length; i++) {%>
-                        <div class="col-md-<%= (i < 3) ? "4" : "6"%>">
-                            <label class="form-label"><%= camposTexto[i][0]%></label>
-                            <input type="<%= camposTexto[i][0].equals("Email") ? "email" : "text"%>"
-                                   class="form-control"
-                                   name="<%= camposTexto[i][1]%>"
-                                   value="<%= camposTexto[i][2]%>" required>
-                        </div>
-                        <% }%>
+<!-- SCRIPTS -->
+<script>
+function mostrarFormularioAgregar() {
+  document.getElementById('formEditar')?.remove();
+  document.getElementById('agregarForm').reset();
+  document.getElementById('formAgregar').style.display = 'block';
+}
 
-                        <div class="col-md-4">
-                            <label class="form-label">Fecha Ingreso</label>
-                            <input type="date" class="form-control" name="fecha" value="<%= fechaIngreso%>" required>
-                        </div>
-
-                        <div class="col-md-4">
-                            <label class="form-label">Salario</label>
-                            <input type="number" step="0.01" class="form-control" name="salario" value="<%= salario%>" required>
-                        </div>
-
-                        <div class="col-md-4">
-                            <label class="form-label">Especialidad ID</label>
-                            <input type="number" class="form-control" name="espId" value="<%= espId%>" required>
-                        </div>
-
-                        <div class="col-12 d-flex justify-content-end gap-2">
-                            <button type="button" class="btn btn-secondary" onclick="ocultarFormulario()">Cancelar</button>
-                            <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-save"></i> Guardar
-                            </button>
-                        </div>
-                    </form>
-                </div>
-
-                <!-- Filtros -->
-                <h5>Filtrado por información</h5>
-                <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
-                    <!-- Filtros -->
-                    <div class="d-flex" style="gap: 0.5rem; max-width: 600px;">
-                        <input id="filtroDni" type="text" class="form-control form-control-sm" placeholder="DNI" style="width: 50%;">
-                        <input id="filtroApellido" type="text" class="form-control form-control-sm" placeholder="Apellido" style="width: 50%;">
-                    </div>
-
-                    <!-- Botón -->
-                    <button class="btn btn-success mt-2 mt-md-0" style="margin-right: -8rem;" onclick="mostrarFormulario()">
-                        <i class="bi bi-person-plus"></i> Nuevo Empleado
-                    </button>
-                </div>
-
-                <!-- Tabla empleados -->
-                <div class="table-responsive" style="max-height: 400px; overflow-y: auto; margin-right: -8rem;">
-                    <table class="table table-bordered table-hover align-middle sticky-header">
-                        <thead class="table-light">
-                            <tr>
-                                <th>ID</th><th>DNI</th><th>Nombre</th><th>Apellido</th><th>Email</th>
-                                <th>Teléfono</th><th>Ingreso</th><th>Salario</th><th>Especialidad</th><th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <%
-                                List<Empleado> empleados = (List<Empleado>) request.getAttribute("empleados");
-                                if (empleados != null && !empleados.isEmpty()) {
-                                    for (Empleado e : empleados) {
-                            %>
-                            <tr>
-                                <td><%= e.getEmpId()%></td>
-                                <td><%= e.getEmpDni()%></td>
-                                <td><%= e.getEmpNom()%></td>
-                                <td><%= e.getEmpApe()%></td>
-                                <td><%= e.getEmpEmail()%></td>
-                                <td><%= e.getEmpTel() != null ? e.getEmpTel() : "N/A"%></td>
-                                <td><%= e.getEmpFec()%></td>
-                                <td><%= e.getEmpSal()%></td>
-                                <td><%= e.getEspecialidad()%></td>
-                                <td class="text-center">
-                                    <a href="empleados?action=edit&id=<%= e.getEmpId()%>" class="btn btn-sm btn-warning">
-                                        <i class="bi bi-pencil-square"></i>
-                                    </a>
-                                    <a href="empleados?action=delete&id=<%= e.getEmpId()%>" class="btn btn-sm btn-danger"
-                                       onclick="return confirmarEliminacion(this);">
-                                        <i class="bi bi-trash"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                            <%
-                                }
-                            } else {
-                            %>
-                            <tr><td colspan="10" class="text-center">No hay empleados registrados.</td></tr>
-                            <% }%>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </main>
-
-        <script>
-            function mostrarFormulario() {
-                const form = document.getElementById("form-empleado");
-                form.classList.remove("d-none");
-                const inputs = form.querySelectorAll("input:not([type='hidden'])");
-                inputs.forEach(input => input.value = "");
-                form.scrollIntoView({behavior: "smooth"});
-
-                if (window.history.replaceState) {
-                    window.history.replaceState(null, null, location.pathname);
-                }
-            }
-
-            function ocultarFormulario() {
-                const form = document.getElementById("form-empleado");
-                form.classList.add("d-none");
-                const inputs = form.querySelectorAll("input:not([type='hidden'])");
-                inputs.forEach(input => input.value = "");
-                window.scrollTo({top: 0, behavior: "smooth"});
-
-                if (window.history.replaceState) {
-                    window.history.replaceState(null, null, location.pathname);
-                }
-            }
-
-            function confirmarEliminacion(link) {
-                return confirm('¿Eliminar este empleado?');
-            }
-
-            // Filtro en tiempo real por DNI y Apellido
-            document.addEventListener("DOMContentLoaded", () => {
-                const filtroDni = document.getElementById("filtroDni");
-                const filtroApellido = document.getElementById("filtroApellido");
-
-                if (filtroDni && filtroApellido) {
-                    filtroDni.addEventListener("input", filtrarTabla);
-                    filtroApellido.addEventListener("input", filtrarTabla);
-                }
-            });
-
-            function filtrarTabla() {
-                const dniFiltro = document.getElementById("filtroDni").value.trim().toLowerCase();
-                const apellidoFiltro = document.getElementById("filtroApellido").value.trim().toLowerCase();
-                const filas = document.querySelectorAll("table tbody tr");
-
-                filas.forEach(fila => {
-                    const celdas = fila.querySelectorAll("td");
-                    if (celdas.length >= 4) {
-                        const dni = celdas[1].textContent.trim().toLowerCase();
-                        const apellido = celdas[3].textContent.trim().toLowerCase();
-
-                        const coincideDni = dni.includes(dniFiltro);
-                        const coincideApellido = apellido.includes(apellidoFiltro);
-
-                        fila.style.display = (coincideDni && coincideApellido) ? "" : "none";
-                    }
-                });
-            }
-        </script>
-    </body>
-</html>
+function cancelarForm() {
+  document.getElementById('agregarForm')?.reset();
+  document.getElementById('editarForm')?.reset();
+  document.getElementById('formAgregar').style.display = 'none';
+  document.getElementById('formEditar')?.remove();
+  history.replaceState(null, '', window.location.pathname);
+}
+</script>

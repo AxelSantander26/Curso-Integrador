@@ -1,78 +1,125 @@
 package grupo7.dentalogic.servlets;
 
 import grupo7.dentalogic.dao.MarcacionDAO;
+import grupo7.dentalogic.model.Marcacion;
 import grupo7.dentalogic.model.Usuario;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.*;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.*;
+
 import java.io.IOException;
-import java.sql.Time;
 import java.sql.Date;
+import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
-@WebServlet("/dashboardOdon")
+@WebServlet("/marcacion")
 public class MarcacionServlet extends HttpServlet {
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        Usuario usuario = (Usuario) session.getAttribute("usuario");
-
-        if (usuario == null) {
-            response.sendRedirect("login");
-            return;
-        }
-
-        int empId = usuario.getIdEmpleado();
-        Time horaActual = new Time(System.currentTimeMillis());
-
-        MarcacionDAO dao = new MarcacionDAO();
-
-        boolean yaMarcada = dao.isAsistenciaMarcada(empId);
-        Time horaEntradaEstablecida = dao.obtenerHoraEntradaEstablecida(empId);
-        Time horaMarcada = null;
-        String estado = "";
-
-        if (yaMarcada) {
-            horaMarcada = dao.obtenerHoraMarcada(empId);
-            estado = dao.obtenerEstado(empId);
-        }
-
-        request.setAttribute("horaActual", horaActual);
-        request.setAttribute("horaEntradaEstablecida", horaEntradaEstablecida);
-        request.setAttribute("yaMarcada", yaMarcada);
-        request.setAttribute("horaMarcada", horaMarcada);
-        request.setAttribute("estadoAsistencia", estado);
-
-        request.getRequestDispatcher("dashboardOdon.jsp").forward(request, response);
-    }
+    private final MarcacionDAO dao = new MarcacionDAO();
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        Usuario usuario = (Usuario) session.getAttribute("usuario");
+
+        HttpSession sesion = request.getSession();
+        Usuario usuario = (Usuario) sesion.getAttribute("usuarioLogueado");
 
         if (usuario == null) {
-            response.sendRedirect("login");
+            response.sendRedirect("login.jsp");
             return;
         }
 
         int empId = usuario.getIdEmpleado();
-        Time horaActual = new Time(System.currentTimeMillis());
-        Date fechaActual = new Date(System.currentTimeMillis());
+        Date fecha = Date.valueOf(LocalDate.now());
+        Time ahora = Time.valueOf(LocalTime.now());
 
-        MarcacionDAO dao = new MarcacionDAO();
+        Marcacion m = new Marcacion();
+        m.setEmpId(empId);
+        m.setFecha(fecha);
 
-        if (!dao.isAsistenciaMarcada(empId)) {
-            Time horaEntrada = dao.obtenerHoraEntradaEstablecida(empId);
-            if (horaEntrada != null) {
-                String estado = dao.calcularEstado(horaEntrada, horaActual);
-                dao.registrarAsistencia(empId, horaActual, estado);
+        Time horaEntradaEst = dao.obtenerHoraEntradaEstablecida(empId);
+        Time horaSalidaEst = dao.obtenerHoraSalidaEstablecida(empId);
+
+        boolean yaMarcoEntrada = dao.yaMarcoEntrada(empId, fecha);
+        Marcacion marcada = dao.obtenerMarcacionDeHoy(empId, fecha);
+
+        if (!yaMarcoEntrada) {
+            if (horaEntradaEst != null) {
+                long diferenciaMinutos = (ahora.getTime() - horaEntradaEst.getTime()) / 60000;
+
+                if (diferenciaMinutos <= 10) {
+                    m.setEstadoEntrada("PUNTUAL");
+                    m.setMinTardanza(0);
+                } else {
+                    m.setEstadoEntrada("TARDANZA");
+                    m.setMinTardanza((int) diferenciaMinutos);
+                }
             }
+            m.setHoraEntrada(ahora);
+            dao.registrarEntrada(m);
+            sesion.setAttribute("mensaje", "Entrada registrada");
+        } else if (marcada != null && marcada.getHoraSalida() == null) {
+            if (horaSalidaEst != null && ahora.before(horaSalidaEst)) {
+                int minAnt = (int) ((horaSalidaEst.getTime() - ahora.getTime()) / 60000);
+                m.setEstadoSalida("ANTICIPADA");
+                m.setMinAnticipacion(minAnt);
+            } else {
+                m.setEstadoSalida("NORMAL");
+                m.setMinAnticipacion(0);
+            }
+            m.setHoraSalida(ahora);
+            dao.registrarSalida(m);
+            sesion.setAttribute("mensaje", "Salida registrada");
         }
 
-        response.sendRedirect("dashboardOdon");
+        response.sendRedirect("marcacion");
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        HttpSession sesion = request.getSession();
+        Usuario usuario = (Usuario) sesion.getAttribute("usuarioLogueado");
+
+        if (usuario == null) {
+            response.sendRedirect("login.jsp");
+            return;
+        }
+
+        int empId = usuario.getIdEmpleado();
+        Date fecha = Date.valueOf(LocalDate.now());
+
+        Time horaEntradaEst = dao.obtenerHoraEntradaEstablecida(empId);
+        Time horaSalidaEst = dao.obtenerHoraSalidaEstablecida(empId);
+        Marcacion marcada = dao.obtenerMarcacionDeHoy(empId, fecha);
+
+        request.setAttribute("horaEntradaEstablecida", horaEntradaEst);
+        request.setAttribute("horaSalidaEstablecida", horaSalidaEst);
+
+        if (marcada != null) {
+            request.setAttribute("horaMarcadaEntrada", marcada.getHoraEntrada());
+            request.setAttribute("horaMarcadaSalida", marcada.getHoraSalida());
+            request.setAttribute("estadoEntrada", marcada.getEstadoEntrada());
+            request.setAttribute("estadoSalida", marcada.getEstadoSalida());
+            request.setAttribute("yaMarcadaEntrada", marcada.getHoraEntrada() != null);
+            request.setAttribute("yaMarcadaSalida", marcada.getHoraSalida() != null);
+        } else {
+            request.setAttribute("horaMarcadaEntrada", null);
+            request.setAttribute("horaMarcadaSalida", null);
+            request.setAttribute("estadoEntrada", null);
+            request.setAttribute("estadoSalida", null);
+            request.setAttribute("yaMarcadaEntrada", false);
+            request.setAttribute("yaMarcadaSalida", false);
+        }
+
+        String mensaje = (String) sesion.getAttribute("mensaje");
+        if (mensaje != null) {
+            request.setAttribute("mensaje", mensaje);
+            sesion.removeAttribute("mensaje");
+        }
+
+        request.getRequestDispatcher("dashboardOdon.jsp").forward(request, response);
     }
 }

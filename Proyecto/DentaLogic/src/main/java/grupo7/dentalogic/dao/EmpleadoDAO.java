@@ -1,172 +1,60 @@
 package grupo7.dentalogic.dao;
 
-import grupo7.dentalogic.config.ConexionBD;
 import grupo7.dentalogic.model.Empleado;
-
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class EmpleadoDAO {
-
-    private Connection conexion;
-
-    public EmpleadoDAO() {
-        this.conexion = ConexionBD.conectar(); // Conexión directa
-    }
-
-    public EmpleadoDAO(Connection conn) {
-        this.conexion = conn; // Conexión externa opcional
-    }
-
-    // ? LISTAR todos los empleados
-    public List<Empleado> obtenerTodos() {
-        List<Empleado> empleados = new ArrayList<>();
-        String sql = "SELECT e.emp_id, e.emp_dni, e.emp_nom, e.emp_ape, e.emp_email, e.emp_tel, e.emp_fec, e.emp_sal, e.esp_id, es.esp_nom "
-                   + "FROM empleados e LEFT JOIN especialidades es ON e.esp_id = es.esp_id";
-
-        try (PreparedStatement ps = conexion.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-
+    public static List<Empleado> obtenerTodos(Connection conn) throws SQLException {
+        List<Empleado> lista = new ArrayList<>();
+        String sql = "SELECT e.emp_id, e.emp_nombre, e.emp_apellido, e.emp_dni, e.esp_id, es.esp_nombre, e.hor_id, CONCAT(h.hora_entrada, ' â€“ ', h.hora_salida) AS horario FROM empleados e JOIN especialidades es ON e.esp_id = es.esp_id JOIN horarios h ON e.hor_id = h.hor_id ORDER BY e.emp_id ASC";
+        try (PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 Empleado emp = new Empleado();
                 emp.setEmpId(rs.getInt("emp_id"));
+                emp.setEmpNombre(rs.getString("emp_nombre"));
+                emp.setEmpApellido(rs.getString("emp_apellido"));
                 emp.setEmpDni(rs.getString("emp_dni"));
-                emp.setEmpNom(rs.getString("emp_nom"));
-                emp.setEmpApe(rs.getString("emp_ape"));
-                emp.setEmpEmail(rs.getString("emp_email"));
-                emp.setEmpTel(rs.getString("emp_tel"));
-                emp.setEmpFec(rs.getDate("emp_fec"));
-                emp.setEmpSal(rs.getDouble("emp_sal"));
                 emp.setEspId(rs.getInt("esp_id"));
-                emp.setEspecialidad(rs.getString("esp_nom") != null ? rs.getString("esp_nom") : "Sin especialidad");
-
-                empleados.add(emp);
+                emp.setEspecialidad(rs.getString("esp_nombre"));
+                emp.setHorId(rs.getInt("hor_id"));
+                emp.setHorario(rs.getString("horario"));
+                lista.add(emp);
             }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-
-        return empleados;
+        return lista;
     }
 
-    // ? OBTENER SOLO EMPLEADOS CON ESPECIALIDAD (Ej: médicos)
-    public List<Empleado> obtenerSoloConEspecialidad() {
-        List<Empleado> empleados = new ArrayList<>();
-        String sql = "SELECT e.emp_id, e.emp_dni, e.emp_nom, e.emp_ape, e.emp_email, e.emp_tel, e.emp_fec, e.emp_sal, e.esp_id, es.esp_nom "
-                   + "FROM empleados e "
-                   + "INNER JOIN especialidades es ON e.esp_id = es.esp_id "
-                   + "WHERE e.esp_id IS NOT NULL";
-
-        try (PreparedStatement ps = conexion.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-
-            while (rs.next()) {
-                Empleado emp = new Empleado();
-                emp.setEmpId(rs.getInt("emp_id"));
-                emp.setEmpDni(rs.getString("emp_dni"));
-                emp.setEmpNom(rs.getString("emp_nom"));
-                emp.setEmpApe(rs.getString("emp_ape"));
-                emp.setEmpEmail(rs.getString("emp_email"));
-                emp.setEmpTel(rs.getString("emp_tel"));
-                emp.setEmpFec(rs.getDate("emp_fec"));
-                emp.setEmpSal(rs.getDouble("emp_sal"));
-                emp.setEspId(rs.getInt("esp_id"));
-                emp.setEspecialidad(rs.getString("esp_nom"));
-
-                empleados.add(emp);
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return empleados;
-    }
-
-    // ? INSERTAR nuevo empleado
-    public boolean agregarEmpleado(Empleado emp) {
-        String sql = "INSERT INTO empleados (emp_dni, emp_nom, emp_ape, emp_email, emp_tel, emp_fec, emp_sal, esp_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-
-        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
-            ps.setString(1, emp.getEmpDni());
-            ps.setString(2, emp.getEmpNom());
-            ps.setString(3, emp.getEmpApe());
-            ps.setString(4, emp.getEmpEmail());
-            ps.setString(5, emp.getEmpTel());
-            ps.setDate(6, emp.getEmpFec());
-            ps.setDouble(7, emp.getEmpSal());
-            ps.setInt(8, emp.getEspId());
-
-            return ps.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+    public static void insertar(Connection conn, Empleado emp) throws SQLException {
+        String sql = "INSERT INTO empleados (emp_nombre, emp_apellido, emp_dni, esp_id, hor_id) VALUES (?, ?, ?, ?, ?)";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, emp.getEmpNombre());
+            stmt.setString(2, emp.getEmpApellido());
+            stmt.setString(3, emp.getEmpDni());
+            stmt.setInt(4, emp.getEspId());
+            stmt.setInt(5, emp.getHorId());
+            stmt.executeUpdate();
         }
     }
 
-    // ? ACTUALIZAR empleado existente
-    public boolean actualizarEmpleado(Empleado emp) {
-        String sql = "UPDATE empleados SET emp_dni = ?, emp_nom = ?, emp_ape = ?, emp_email = ?, emp_tel = ?, emp_fec = ?, emp_sal = ?, esp_id = ? WHERE emp_id = ?";
-
-        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
-            ps.setString(1, emp.getEmpDni());
-            ps.setString(2, emp.getEmpNom());
-            ps.setString(3, emp.getEmpApe());
-            ps.setString(4, emp.getEmpEmail());
-            ps.setString(5, emp.getEmpTel());
-            ps.setDate(6, emp.getEmpFec());
-            ps.setDouble(7, emp.getEmpSal());
-            ps.setInt(8, emp.getEspId());
-            ps.setInt(9, emp.getEmpId());
-
-            return ps.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+    public static void actualizar(Connection conn, Empleado emp) throws SQLException {
+        String sql = "UPDATE empleados SET emp_nombre=?, emp_apellido=?, emp_dni=?, esp_id=?, hor_id=? WHERE emp_id=?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, emp.getEmpNombre());
+            stmt.setString(2, emp.getEmpApellido());
+            stmt.setString(3, emp.getEmpDni());
+            stmt.setInt(4, emp.getEspId());
+            stmt.setInt(5, emp.getHorId());
+            stmt.setInt(6, emp.getEmpId());
+            stmt.executeUpdate();
         }
     }
 
-    // ? ELIMINAR empleado
-    public boolean eliminarEmpleado(int empId) {
-        String sql = "DELETE FROM empleados WHERE emp_id = ?";
-
-        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
-            ps.setInt(1, empId);
-            return ps.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+    public static void eliminar(Connection conn, int id) throws SQLException {
+        String sql = "DELETE FROM empleados WHERE emp_id=?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
         }
-    }
-
-    // ? OBTENER empleado por ID
-    public Empleado obtenerPorId(int empId) {
-        String sql = "SELECT e.*, es.esp_nom FROM empleados e LEFT JOIN especialidades es ON e.esp_id = es.esp_id WHERE emp_id = ?";
-        Empleado emp = null;
-
-        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
-            ps.setInt(1, empId);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    emp = new Empleado();
-                    emp.setEmpId(rs.getInt("emp_id"));
-                    emp.setEmpDni(rs.getString("emp_dni"));
-                    emp.setEmpNom(rs.getString("emp_nom"));
-                    emp.setEmpApe(rs.getString("emp_ape"));
-                    emp.setEmpEmail(rs.getString("emp_email"));
-                    emp.setEmpTel(rs.getString("emp_tel"));
-                    emp.setEmpFec(rs.getDate("emp_fec"));
-                    emp.setEmpSal(rs.getDouble("emp_sal"));
-                    emp.setEspId(rs.getInt("esp_id"));
-                    emp.setEspecialidad(rs.getString("esp_nom"));
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return emp;
     }
 }

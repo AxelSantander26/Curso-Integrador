@@ -1,13 +1,11 @@
 package grupo7.dentalogic.model;
 
 public class Usuario {
-
     private int idUsuario;
     private int idEmpleado;
     private String usuario;
     private String password;
     private int idRol;
-    private boolean activo;
     private String nombre;
     private String apellido;
     private String rol;
@@ -15,19 +13,16 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Usuario(int idUsuario, int idEmpleado, String usuario, String password, int idRol, boolean activo, String nombre, String apellido, String rol) {
+    public Usuario(int idUsuario, int idEmpleado, String usuario, String password, int idRol, String nombre, String apellido, String rol) {
         this.idUsuario = idUsuario;
         this.idEmpleado = idEmpleado;
         this.usuario = usuario;
         this.password = password;
         this.idRol = idRol;
-        this.activo = activo;
         this.nombre = nombre;
         this.apellido = apellido;
         this.rol = rol;
     }
-
-    // Getters y setters
 
     public int getIdUsuario() {
         return idUsuario;
@@ -45,11 +40,11 @@ public class Usuario {
         this.idEmpleado = idEmpleado;
     }
 
-    public String getUsuario() {  // Cambié 'getEmail' a 'getUsuario'
+    public String getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(String usuario) {  // Cambié 'setEmail' a 'setUsuario'
+    public void setUsuario(String usuario) {
         this.usuario = usuario;
     }
 
@@ -67,14 +62,6 @@ public class Usuario {
 
     public void setIdRol(int idRol) {
         this.idRol = idRol;
-    }
-
-    public boolean isActivo() {
-        return activo;
-    }
-
-    public void setActivo(boolean activo) {
-        this.activo = activo;
     }
 
     public String getNombre() {

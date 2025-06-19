@@ -2,45 +2,53 @@ package grupo7.dentalogic.dao;
 
 import grupo7.dentalogic.config.ConexionBD;
 import grupo7.dentalogic.model.Usuario;
-import org.mindrot.jbcrypt.BCrypt;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import org.mindrot.jbcrypt.BCrypt;
 
 public class UsuarioDAO {
 
-    public static Usuario validarUsuario(String usuario, String password) {
-        Usuario usuarioValidado = null;
-        String query = "SELECT u.usr_id, u.usr_user, u.usr_pass, u.emp_id, u.rol_id, u.usr_act, "
-                + "e.emp_nom, e.emp_ape, r.rol_nom AS rol "
-                + "FROM usuarios u "
-                + "JOIN empleados e ON u.emp_id = e.emp_id "
-                + "JOIN roles r ON u.rol_id = r.rol_id "
-                + "WHERE u.usr_user = ? AND u.usr_act = 1";
+    public Usuario login(String username, String password) {
+        Usuario usuario = null;
 
-        try (Connection con = ConexionBD.conectar(); PreparedStatement stmt = con.prepareStatement(query)) {
-            stmt.setString(1, usuario); // Cambié 'email' por 'usuario'
-            ResultSet rs = stmt.executeQuery();
+        String sql = """
+            SELECT u.usr_id, u.emp_id, u.usr_usuario, u.usr_clave, u.rol_id,
+                   e.emp_nombre, e.emp_apellido, r.rol_nombre
+            FROM usuarios u
+            JOIN empleados e ON u.emp_id = e.emp_id
+            JOIN roles r ON u.rol_id = r.rol_id
+            WHERE u.usr_usuario = ?
+        """;
 
-            if (rs.next()) {
-                String storedPassword = rs.getString("usr_pass");
-                if (BCrypt.checkpw(password, storedPassword)) {
-                    usuarioValidado = new Usuario(
-                            rs.getInt("usr_id"),
-                            rs.getInt("emp_id"),
-                            rs.getString("usr_user"), // Cambié 'email' por 'usuario'
-                            storedPassword,
-                            rs.getInt("rol_id"),
-                            rs.getBoolean("usr_act"),
-                            rs.getString("emp_nom"),
-                            rs.getString("emp_ape"),
-                            rs.getString("rol")
-                    );
+        try (Connection conn = ConexionBD.conectar();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, username);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    String hashedPassword = rs.getString("usr_clave");
+                    if (BCrypt.checkpw(password, hashedPassword)) {
+                        usuario = new Usuario();
+                        usuario.setIdUsuario(rs.getInt("usr_id"));
+                        usuario.setIdEmpleado(rs.getInt("emp_id"));
+                        usuario.setUsuario(rs.getString("usr_usuario"));
+                        usuario.setPassword(null); // No exponer el hash
+                        usuario.setIdRol(rs.getInt("rol_id"));
+                        usuario.setNombre(rs.getString("emp_nombre"));
+                        usuario.setApellido(rs.getString("emp_apellido"));
+                        usuario.setRol(rs.getString("rol_nombre"));
+                    }
                 }
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return usuarioValidado;
+        return usuario;
     }
 }

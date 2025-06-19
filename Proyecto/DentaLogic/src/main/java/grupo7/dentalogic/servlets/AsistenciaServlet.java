@@ -1,78 +1,47 @@
 package grupo7.dentalogic.servlets;
 
 import grupo7.dentalogic.dao.AsistenciaDAO;
-import grupo7.dentalogic.model.AsistenciaInfo;
-
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.*;
+import grupo7.dentalogic.model.Asistencia;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.*;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.*;
 
-@WebServlet("/asistencias")
+@WebServlet("/asistencia")
 public class AsistenciaServlet extends HttpServlet {
-    private final AsistenciaDAO asistenciaDAO = new AsistenciaDAO();
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        // Obtener parámetros year y month de la URL (opcional)
-        String yearParam = request.getParameter("year");
-        String monthParam = request.getParameter("month");
-
-        Calendar cal = Calendar.getInstance();
-        int year, month;
-
-        if (yearParam != null && monthParam != null) {
-            try {
-                year = Integer.parseInt(yearParam);
-                month = Integer.parseInt(monthParam);
-                // Validar mes entre 0 y 11
-                if (month >= 0 && month <= 11) {
-                    cal.set(Calendar.YEAR, year);
-                    cal.set(Calendar.MONTH, month);
-                } else {
-                    // Si el mes no es válido, usar fecha actual
-                    cal = Calendar.getInstance();
-                }
-            } catch (NumberFormatException e) {
-                // Si hay error, usar fecha actual
-                cal = Calendar.getInstance();
-            }
-        } else {
-            // Si no hay parámetros, usar fecha actual
-            cal = Calendar.getInstance();
-        }
-
-        year = cal.get(Calendar.YEAR);
-        month = cal.get(Calendar.MONTH);
-
-        // Obtener datos
-        List<AsistenciaInfo> empleados = asistenciaDAO.obtenerTodosLosEmpleados();
-        List<AsistenciaInfo> asistencias = asistenciaDAO.obtenerAsistenciasPorMesYAnio(year, month);
-
-        // Preparar datos para la vista
-        Map<Integer, Map<Integer, AsistenciaInfo>> asistenciasPorEmpleado = new HashMap<>();
-        for (AsistenciaInfo asi : asistencias) {
-            Calendar tempCal = Calendar.getInstance();
-            tempCal.setTime(asi.getFecha());
-            int day = tempCal.get(Calendar.DAY_OF_MONTH);
-            int empId = asi.getEmpId();
-
-            if (!asistenciasPorEmpleado.containsKey(empId)) {
-                asistenciasPorEmpleado.put(empId, new HashMap<>());
-            }
-            asistenciasPorEmpleado.get(empId).put(day, asi);
-        }
-
-        // Pasar atributos a la JSP
+        
+        int mes = obtenerParametroInt(request, "mes", LocalDate.now().getMonthValue() - 1);
+        int anio = obtenerParametroInt(request, "anio", LocalDate.now().getYear());
+        
+        AsistenciaDAO dao = new AsistenciaDAO();
+        
+        List<Asistencia> empleados = dao.obtenerTodosLosEmpleados();
+        Map<Integer, Map<Integer, Asistencia>> asistenciaMap = dao.obtenerAsistenciasPorMesYAnio(anio, mes);
+        
+        int totalDiasMes = YearMonth.of(anio, mes + 1).lengthOfMonth();
+        
+        // Preparamos datos para la vista
         request.setAttribute("empleados", empleados);
-        request.setAttribute("asistenciasPorEmpleado", asistenciasPorEmpleado);
-        request.setAttribute("year", year);
-        request.setAttribute("month", month);
-        request.setAttribute("diasEnMes", cal.getActualMaximum(Calendar.DAY_OF_MONTH));
-
-        request.getRequestDispatcher("asistencias.jsp").forward(request, response);
+        request.setAttribute("asistenciaMap", asistenciaMap);
+        request.setAttribute("totalDiasMes", totalDiasMes);
+        request.setAttribute("mes", mes);
+        request.setAttribute("anio", anio);
+        request.setAttribute("hoy", LocalDate.now());
+        
+        request.getRequestDispatcher("/asistencia.jsp").forward(request, response);
+    }
+    
+    private int obtenerParametroInt(HttpServletRequest request, String paramName, int defaultValue) {
+        try {
+            return Integer.parseInt(request.getParameter(paramName));
+        } catch (NumberFormatException e) {
+            return defaultValue;
+        }
     }
 }
