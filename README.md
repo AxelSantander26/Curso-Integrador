@@ -1,54 +1,54 @@
-# Sistema de Administraci贸n Interno - DENTALOGIC 馃Ψ
+# Sistema de Administración Interno - DENTALOGIC ??
 
-Este proyecto es parte del curso **Curso Integrador I: Sistemas Software - Secci贸n 24079**, desarrollado por estudiantes de la **Facultad de Ingenier铆a de Sistemas** de la universidad en Per煤.
+Este proyecto es parte del curso **Curso Integrador I: Sistemas Software - Sección 24079**, desarrollado por estudiantes de la **Facultad de Ingeniería de Sistemas** de la universidad en Perú.
 
-## 馃搶 Descripci贸n
+## ?? Descripción
 
-**DENTALOGIC** es un sistema interno de gesti贸n dise帽ado para optimizar la administraci贸n de una cl铆nica dental. El objetivo principal es mejorar la puntualidad del personal m茅dico y la gesti贸n eficiente de citas con los pacientes, as铆 como la gesti贸n de planillas para el personal.
+**DENTALOGIC** es un sistema interno de gestión dise?ado para optimizar la administración de una clínica dental. El objetivo principal es mejorar la puntualidad del personal médico y la gestión eficiente de citas con los pacientes, así como la gestión de planillas para el personal.
 
-## 馃 Problem谩tica
+## ?? Problemática
 
-Actualmente, la cl铆nica presenta:
+Actualmente, la clínica presenta:
 - Retrasos y reprogramaciones constantes en citas.
-- Impuntualidad del personal m茅dico.
-- Mala distribuci贸n de horarios.
-- Falta de control y automatizaci贸n en el sistema de pagos.
+- Impuntualidad del personal médico.
+- Mala distribución de horarios.
+- Falta de control y automatización en el sistema de pagos.
 
-## 馃幆 Objetivos
+## ?? Objetivos
 
 - Gestionar citas de manera ordenada y eficiente.
 - Implementar un control de asistencia para el personal.
-- Automatizar la administraci贸n de pagos y honorarios.
-- Mejorar la experiencia del cliente mediante una mejor programaci贸n de horarios.
+- Automatizar la administración de pagos y honorarios.
+- Mejorar la experiencia del cliente mediante una mejor programación de horarios.
 
-## 馃З M贸dulos del Sistema
+## ?? Módulos del Sistema
 
-1. **Gesti贸n de Citas**  
+1. **Gestión de Citas**  
 2. **Control de Asistencia del Personal**  
-3. **Gesti贸n de Pagos (Planillas)**  
+3. **Gestión de Pagos (Planillas)**  
 4. **Interfaz Multidispositivo**  
 5. **Seguridad y Privacidad de Datos**
 
-## 馃懃 Equipo de Desarrollo
+## ?? Equipo de Desarrollo
 
-- **Santander Alcarraz Axel Jes煤s** - U21322494  
-- **Ochoa Alarc贸n Gerson David** - U22231012  
+- **Santander Alcarraz Axel Jesús** - U21322494  
+- **Ochoa Alarcón Gerson David** - U22231012  
 - **Cocha Parrilla Lucas David** - U22208231  
 - **Docente:** Prof. Carlos Alberto Effio Gonzales  
 
-## 馃搫 Documentaci贸n
+## ?? Documentación
 
 - [Lean Canvas del Proyecto](https://www.canva.com/design/DAGisvtjgEY/LeIdnjk1L7KT4MdQGmhwtQ/edit?utm_content=DAGisvtjgEY&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
 
-## 馃搮 Estado del Proyecto
+## ?? Estado del Proyecto
 
-- 鉁?Cap铆tulo 1: An谩lisis de la Empresa  
-- 鉁?Cap铆tulo 2: An谩lisis de Situaci贸n  
-- 鉁?Cap铆tulo 3: Alternativas de Soluci贸n (En desarrollo)  
-- 鉁?Cap铆tulo 4: Planificaci贸n (En desarrollo)  
-- 鉁?Cap铆tulo 5: Desarrollo de Soluci贸n (En desarrollo)  
-- 馃攧 Cap铆tulo 6: Construcci贸n (En desarrollo)  
+- ? Capítulo 1: Análisis de la Empresa  
+- ? Capítulo 2: Análisis de Situación  
+- ? Capítulo 3: Alternativas de Solución (En desarrollo)  
+- ? Capítulo 4: Planificación (En desarrollo)  
+- ? Capítulo 5: Desarrollo de Solución (En desarrollo)  
+- ? Capítulo 6: Construcción (En desarrollo)  
 
 ---
 
-> Proyecto desarrollado con fines acad茅micos. Universidad UTP - Per煤, 2025.
+> Proyecto desarrollado con fines académicos. Universidad UTP - Perú, 2025.
