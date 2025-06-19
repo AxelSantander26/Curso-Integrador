@@ -1,33 +1,36 @@
-# Sistema de Administración Interno - DENTALOGIC 🦷
+# Sistema de Control de Asistencias y Nómina - DENTALOGIC 🦷
 
-Este proyecto es parte del curso **Curso Integrador I: Sistemas Software - Sección 24079**, desarrollado por estudiantes de la **Facultad de Ingeniería de Sistemas** de la universidad en Perú.
+Este proyecto forma parte del curso **Curso Integrador I: Sistemas Software - Sección 24079**, desarrollado por estudiantes de la **Facultad de Ingeniería de Sistemas** de la Universidad Tecnológica del Perú.
 
 ## 📌 Descripción
 
-**DENTALOGIC** es un sistema interno de gestión diseñado para optimizar la administración de una clínica dental. El objetivo principal es mejorar la puntualidad del personal médico y la gestión eficiente de citas con los pacientes, así como la gestión de planillas para el personal.
+**DENTALOGIC** es un sistema interno diseñado para gestionar la **asistencia del personal** y automatizar la **generación de nóminas** en una clínica dental. Permite llevar un control detallado de entradas, salidas, tardanzas, ausencias y justificativos, optimizando así la administración del recurso humano.
 
 ## 🝥 Problemática
 
-Actualmente, la clínica presenta:
-- Retrasos y reprogramaciones constantes en citas.
-- Impuntualidad del personal médico.
-- Mala distribución de horarios.
-- Falta de control y automatización en el sistema de pagos.
+La clínica presenta diversos problemas en la gestión del personal:
+
+- Impuntualidad frecuente de los trabajadores.
+- Ausencias sin registro ni seguimiento.
+- Cálculo manual de descuentos en pagos.
+- Falta de evidencia para justificar inasistencias.
+- No existe un sistema centralizado de control.
 
 ## 🎯 Objetivos
 
-- Gestionar citas de manera ordenada y eficiente.
-- Implementar un control de asistencia para el personal.
-- Automatizar la administración de pagos y honorarios.
-- Mejorar la experiencia del cliente mediante una mejor programación de horarios.
+- Registrar las **entradas y salidas** del personal en tiempo real.
+- Identificar y calcular automáticamente **tardanzas** y **salidas anticipadas**.
+- Permitir la carga y validación de **justificativos** de ausencias.
+- Generar la **nómina mensual** aplicando **descuentos** por faltas o impuntualidades.
+- Brindar al administrador una **vista general por empleado y por mes**.
 
 ## 💻 Módulos del Sistema
 
-1. **Gestión de Citas**  
-2. **Control de Asistencia del Personal**  
-3. **Gestión de Pagos (Planillas)**  
-4. **Interfaz Multidispositivo**  
-5. **Seguridad y Privacidad de Datos**
+1. **Control de Asistencia del Personal**  
+2. **Gestión de Justificativos**  
+3. **Generación de Nómina Automatizada con Descuentos**  
+4. **Dashboard Administrativo (Resumen por empleado)**  
+5. **Exportación e historial de pagos**
 
 ## 👥 Equipo de Desarrollo
 
@@ -51,4 +54,4 @@ Actualmente, la clínica presenta:
 
 ---
 
-> Proyecto desarrollado con fines académicos. Universidad UTP - Perú, 2025.
+> Proyecto desarrollado con fines académicos. Universidad Tecnológica del Perú – 2025.
