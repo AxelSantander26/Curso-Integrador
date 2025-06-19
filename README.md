@@ -42,11 +42,11 @@ Actualmente, la clínica presenta:
 
 ## 📅 Estado del Proyecto
 
-- ✅ Capítulo 1: Análisis de la Empresa  
-- ✅ Capítulo 2: Análisis de Situación  
-- 🔄 Capítulo 3: Alternativas de Solución (En desarrollo)  
-- 🔄 Capítulo 4: Planificación (En desarrollo)  
-- 🔄 Capítulo 5: Desarrollo de Solución (En desarrollo)  
+- �?Capítulo 1: Análisis de la Empresa  
+- �?Capítulo 2: Análisis de Situación  
+- �?Capítulo 3: Alternativas de Solución (En desarrollo)  
+- �?Capítulo 4: Planificación (En desarrollo)  
+- �?Capítulo 5: Desarrollo de Solución (En desarrollo)  
 - 🔄 Capítulo 6: Construcción (En desarrollo)  
 
 ---
