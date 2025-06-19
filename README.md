@@ -1,54 +1,54 @@
-# Sistema de Administraci®Æn Interno - DENTALOGIC ??
+# Sistema de Administraci√≥n Interno - DENTALOGIC ü¶∑
 
-Este proyecto es parte del curso **Curso Integrador I: Sistemas Software - Secci®Æn 24079**, desarrollado por estudiantes de la **Facultad de Ingenier®™a de Sistemas** de la universidad en Per®≤.
+Este proyecto es parte del curso **Curso Integrador I: Sistemas Software - Secci√≥n 24079**, desarrollado por estudiantes de la **Facultad de Ingenier√≠a de Sistemas** de la universidad en Per√∫.
 
-## ?? Descripci®Æn
+## üìå Descripci√≥n
 
-**DENTALOGIC** es un sistema interno de gesti®Æn dise?ado para optimizar la administraci®Æn de una cl®™nica dental. El objetivo principal es mejorar la puntualidad del personal m®¶dico y la gesti®Æn eficiente de citas con los pacientes, as®™ como la gesti®Æn de planillas para el personal.
+**DENTALOGIC** es un sistema interno de gesti√≥n dise√±ado para optimizar la administraci√≥n de una cl√≠nica dental. El objetivo principal es mejorar la puntualidad del personal m√©dico y la gesti√≥n eficiente de citas con los pacientes, as√≠ como la gesti√≥n de planillas para el personal.
 
-## ?? Problem®¢tica
+## üù• Problem√°tica
 
-Actualmente, la cl®™nica presenta:
+Actualmente, la cl√≠nica presenta:
 - Retrasos y reprogramaciones constantes en citas.
-- Impuntualidad del personal m®¶dico.
-- Mala distribuci®Æn de horarios.
-- Falta de control y automatizaci®Æn en el sistema de pagos.
+- Impuntualidad del personal m√©dico.
+- Mala distribuci√≥n de horarios.
+- Falta de control y automatizaci√≥n en el sistema de pagos.
 
-## ?? Objetivos
+## üéØ Objetivos
 
 - Gestionar citas de manera ordenada y eficiente.
 - Implementar un control de asistencia para el personal.
-- Automatizar la administraci®Æn de pagos y honorarios.
-- Mejorar la experiencia del cliente mediante una mejor programaci®Æn de horarios.
+- Automatizar la administraci√≥n de pagos y honorarios.
+- Mejorar la experiencia del cliente mediante una mejor programaci√≥n de horarios.
 
-## ?? M®Ædulos del Sistema
+## üíª M√≥dulos del Sistema
 
-1. **Gesti®Æn de Citas**  
+1. **Gesti√≥n de Citas**  
 2. **Control de Asistencia del Personal**  
-3. **Gesti®Æn de Pagos (Planillas)**  
+3. **Gesti√≥n de Pagos (Planillas)**  
 4. **Interfaz Multidispositivo**  
 5. **Seguridad y Privacidad de Datos**
 
-## ?? Equipo de Desarrollo
+## üë• Equipo de Desarrollo
 
-- **Santander Alcarraz Axel Jes®≤s** - U21322494  
-- **Ochoa Alarc®Æn Gerson David** - U22231012  
+- **Santander Alcarraz Axel Jes√∫s** - U21322494  
+- **Ochoa Alarc√≥n Gerson David** - U22231012  
 - **Cocha Parrilla Lucas David** - U22208231  
 - **Docente:** Prof. Carlos Alberto Effio Gonzales  
 
-## ?? Documentaci®Æn
+## üìö Documentaci√≥n
 
 - [Lean Canvas del Proyecto](https://www.canva.com/design/DAGisvtjgEY/LeIdnjk1L7KT4MdQGmhwtQ/edit?utm_content=DAGisvtjgEY&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
 
-## ?? Estado del Proyecto
+## üìÜ Estado del Proyecto
 
-- ? Cap®™tulo 1: An®¢lisis de la Empresa  
-- ? Cap®™tulo 2: An®¢lisis de Situaci®Æn  
-- ? Cap®™tulo 3: Alternativas de Soluci®Æn (En desarrollo)  
-- ? Cap®™tulo 4: Planificaci®Æn (En desarrollo)  
-- ? Cap®™tulo 5: Desarrollo de Soluci®Æn (En desarrollo)  
-- ? Cap®™tulo 6: Construcci®Æn (En desarrollo)  
+- ‚úÖ Cap√≠tulo 1: An√°lisis de la Empresa  
+- ‚úÖ Cap√≠tulo 2: An√°lisis de Situaci√≥n  
+- ‚úÖ Cap√≠tulo 3: Alternativas de Soluci√≥n (En desarrollo)  
+- ‚úÖ Cap√≠tulo 4: Planificaci√≥n (En desarrollo)  
+- ‚úÖ Cap√≠tulo 5: Desarrollo de Soluci√≥n (En desarrollo)  
+- ‚è≥ Cap√≠tulo 6: Construcci√≥n (En desarrollo)  
 
 ---
 
-> Proyecto desarrollado con fines acad®¶micos. Universidad UTP - Per®≤, 2025.
+> Proyecto desarrollado con fines acad√©micos. Universidad UTP - Per√∫, 2025.
