@@ -225,9 +225,8 @@
 <div class="login-container">
     <div class="login-left">
         <div class="login-left-content">
-            <img src="assets/images/logo-white.png" alt="Logo Dental">
             <h2>Sistema de Gestión Dental</h2>
-            <p>Acceso al sistema para la administración de pacientes, citas, historiales clínicos y reportes financieros.</p>
+            <p>Acceso al sistema para la administración de empleados ,asistencias, nominas.</p>
             <div style="display: flex; align-items: center; gap: 1rem; margin-top: 2rem;">
                 <div style="width: 40px; height: 3px; background: var(--accent-color);"></div>
                 <small>Plataforma segura y confiable</small>

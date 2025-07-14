@@ -421,25 +421,11 @@ request.setAttribute("usuario", usuario);
             </a>
         </div>
 
-        <div class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+        <div class="nav-item">
+            <a href="${pageContext.request.contextPath}/resumen" class="nav-link ${pageContext.request.requestURI.endsWith('/resumen.jsp') ? 'active' : ''}">
                 <i class="bi bi-cash-stack"></i>
                 <small>Nómina</small>
             </a>
-            <ul class="dropdown-menu">
-                <li>
-                    <a class="dropdown-item ${pageContext.request.requestURI.endsWith('/resumen.jsp') ? 'active' : ''}"
-                       href="${pageContext.request.contextPath}/resumen">
-                        <i class="bi bi-file-text"></i> Resumen actual
-                    </a>
-                </li>
-                <li>
-                    <a class="dropdown-item ${pageContext.request.requestURI.endsWith('/historial.jsp') ? 'active' : ''}"
-                       href="${pageContext.request.contextPath}/historial">
-                        <i class="bi bi-clock-history"></i> Historial
-                    </a>
-                </li>
-            </ul>
         </div>
     </div>
 </div>
