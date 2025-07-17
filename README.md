@@ -1,6 +1,26 @@
 # Sistema de Control de Asistencias y Nómina - DENTALOGIC
 
-Este proyecto forma parte del curso **Curso Integrador I: Sistemas Software - Sección 24079**, desarrollado por estudiantes de la **Facultad de Ingeniería de Sistemas** de la Universidad Tecnológica del Perú.
+## Equipo de Desarrollo
+
+- **Santander Alcarraz Axel Jesús** - U21322494  
+- **Ochoa Alarcón Gerson David** - U22231012  
+- **Cocha Parrilla Lucas David** - U22208231  
+- **Docente:** Prof. Carlos Alberto Effio Gonzales  
+
+## Estado del Proyecto
+
+- ✅ Capítulo 1: Análisis de la Empresa  
+- ✅ Capítulo 2: Análisis de Situación  
+- ✅ Capítulo 3: Alternativas de Solución (Completo)  
+- ✅ Capítulo 4: Planificación (Completo)  
+- ✅ Capítulo 5: Desarrollo de Solución (Completo)  
+- ✅ Capítulo 6: Construcción (Completo)  
+
+## Lean Canvas del Proyecto
+
+- [Ver Lean Canvas en Canva](https://www.canva.com/design/DAGisvtjgEY/LeIdnjk1L7KT4MdQGmhwtQ/edit?utm_content=DAGisvtjgEY&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
+
+---
 
 ## Descripción
 
@@ -67,26 +87,6 @@ La clínica presenta diversos problemas en la gestión del personal:
 
 6. **Exportación e Historial de Pagos**  
    - Permite descargar reportes de nómina y mantener un historial de boletas generadas.
-
-## Equipo de Desarrollo
-
-- **Santander Alcarraz Axel Jesús** - U21322494  
-- **Ochoa Alarcón Gerson David** - U22231012  
-- **Cocha Parrilla Lucas David** - U22208231  
-- **Docente:** Prof. Carlos Alberto Effio Gonzales  
-
-## Documentación
-
-- [Lean Canvas del Proyecto](https://www.canva.com/design/DAGisvtjgEY/LeIdnjk1L7KT4MdQGmhwtQ/edit?utm_content=DAGisvtjgEY&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
-
-## Estado del Proyecto
-
-- ✅ Capítulo 1: Análisis de la Empresa  
-- ✅ Capítulo 2: Análisis de Situación  
-- ✅ Capítulo 3: Alternativas de Solución (Completo)  
-- ✅ Capítulo 4: Planificación (Completo)  
-- ✅ Capítulo 5: Desarrollo de Solución (Completo)  
-- ✅ Capítulo 6: Construcción (Completo)  
 
 ---
 
