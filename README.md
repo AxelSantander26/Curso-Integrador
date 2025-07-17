@@ -1,11 +1,10 @@
 # Sistema de Control de Asistencias y Nómina - DENTALOGIC
 
-## Equipo de Desarrollo
+## Equipo de Desarrollo **Docente:** Prof. Carlos Alberto Effio Gonzales  
 
 - **Santander Alcarraz Axel Jesús** - U21322494  
 - **Ochoa Alarcón Gerson David** - U22231012  
-- **Cocha Parrilla Lucas David** - U22208231  
-- **Docente:** Prof. Carlos Alberto Effio Gonzales  
+- **Cocha Parrilla Lucas David** - U22208231
 
 ## Estado del Proyecto
 
